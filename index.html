@@ -168,8 +168,9 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 }
 .modal-leg-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.55);}
 .modal-leg-dot{width:10px;height:10px;border-radius:50%;}
-.modal-body{flex:1;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:0;}
-.modal-body svg{display:block;max-width:100%;max-height:100%;}
+.modal-body{flex:1;min-height:0;overflow:hidden;display:block;padding:0;position:relative;cursor:grab;}
+.modal-body.panning{cursor:grabbing;}
+.modal-body svg{display:block;}
 
 /* ══════════════════════════════
    PROGRESS
@@ -389,7 +390,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
   <div class="modal-legend">
     <div class="modal-leg-item"><div class="modal-leg-dot" style="background:#5a9e2f"></div>Complete</div>
     <div class="modal-leg-item"><div class="modal-leg-dot" style="background:#c0392b"></div>Pending</div>
-    <span style="font-size:12px;color:rgba(255,255,255,0.3);margin-left:auto;">Hover over a country for details</span>
+    <span style="font-size:12px;color:rgba(255,255,255,0.3);margin-left:auto;">Scroll to zoom · Drag to pan · Hover for details</span>
   </div>
   <div class="modal-body" id="modal-body"></div>
 </div>
@@ -590,7 +591,7 @@ function buildAfricaSVG(container, W, H) {
   const svg=d3.select(container).append('svg')
     .attr('viewBox',`0 0 ${W} ${H}`)
     .attr('preserveAspectRatio','xMidYMid meet')
-    .style('width','100%').style('height','100%').style('display','block');
+    .style('display','block');
   const proj=d3.geoMercator().center([22,0]).scale(W*0.44).translate([W/2+10,H/2+20]);
   const path=d3.geoPath(proj);
   const africa=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getAN(+d.id));
@@ -622,7 +623,7 @@ function buildSEASVG(container, W, H) {
   const svg=d3.select(container).append('svg')
     .attr('viewBox',`0 0 ${W} ${H}`)
     .attr('preserveAspectRatio','xMidYMid meet')
-    .style('width','100%').style('height','100%').style('display','block');
+    .style('display','block');
   const proj=d3.geoMercator().center([103,16]).scale(W*0.92).translate([W/2,H/2]);
   const path=d3.geoPath(proj);
   const sea=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getSN(+d.id));
@@ -649,10 +650,44 @@ function openModal(type) {
     document.getElementById('modal-meta').textContent='1 of 5 countries responded · 20% response rate';
   }
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    const W = body.clientWidth   || window.innerWidth;
-    const H = body.clientHeight  || (window.innerHeight - 115);
-    if(type==='africa') buildAfricaSVG(body, W, H);
-    else buildSEASVG(body, W, H);
+    const W = body.clientWidth  || window.innerWidth;
+    const H = body.clientHeight || (window.innerHeight - 115);
+
+    // Build at 1.4x screen size so there's room to pan, centered initially
+    const MW = Math.round(W * 1.4);
+    const MH = Math.round(H * 1.4);
+
+    // Build the SVG at larger size
+    const svgNode = type==='africa'
+      ? buildAfricaSVG(body, MW, MH)
+      : buildSEASVG(body, MW, MH);
+
+    // Position SVG absolutely, centered to start
+    const svg = d3.select(body).select('svg');
+    svg.style('position','absolute')
+       .style('width', MW+'px')
+       .style('height', MH+'px')
+       .style('top', Math.round((H-MH)/2)+'px')
+       .style('left', Math.round((W-MW)/2)+'px');
+
+    // Add D3 zoom behaviour
+    const zoom = d3.zoom()
+      .scaleExtent([0.5, 6])
+      .on('start', ()=>body.classList.add('panning'))
+      .on('end',   ()=>body.classList.remove('panning'))
+      .on('zoom', (event)=>{
+        const t = event.transform;
+        // Translate the SVG element itself
+        const x = Math.round((W-MW)/2) + t.x;
+        const y = Math.round((H-MH)/2) + t.y;
+        const s = t.k;
+        svg.style('transform-origin','0 0')
+           .style('transform', `translate(${t.x}px,${t.y}px) scale(${s})`)
+           .style('left', Math.round((W-MW)/2)+'px')
+           .style('top',  Math.round((H-MH)/2)+'px');
+      });
+
+    d3.select(body).call(zoom);
   }));
 }
 function closeModal(){
