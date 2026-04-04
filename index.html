@@ -50,10 +50,10 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 /* ══════════════════════════════
    HOME
 ══════════════════════════════ */
-.home{background:var(--navy);padding-bottom:0;}
+.home{background:var(--navy);padding-bottom:0;min-height:100vh;max-height:100vh;overflow:hidden;}
 .hero{
   display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;min-height:calc(100vh - 104px);
+  align-items:center;min-height:calc(100vh - 262px);
   position:relative;overflow:hidden;
 }
 .hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 8% 65%,rgba(46,107,122,0.45) 0%,transparent 55%),radial-gradient(ellipse at 92% 15%,rgba(168,224,74,0.06) 0%,transparent 45%);}
@@ -73,16 +73,16 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 .hstat:last-child{border-right:none;}
 .hstat-n{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--lime);line-height:1;margin-bottom:3px;}
 .hstat-l{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.35);}
-.hero-right{position:relative;z-index:1;height:calc(100vh - 104px);display:flex;align-items:center;justify-content:center;}
+.hero-right{position:relative;z-index:1;height:calc(100vh - 262px);display:flex;align-items:center;justify-content:center;}
 #globe-canvas{width:100%;height:100%;display:block;cursor:grab;}
 #globe-canvas:active{cursor:grabbing;}
 
 /* photo banner */
-.photo-banner{background:var(--navy-lt,#164a4e);padding:22px 0;overflow:hidden;border-top:2px solid rgba(168,224,74,0.2);border-bottom:2px solid rgba(168,224,74,0.2);}
+.photo-banner{background:var(--navy-lt,#164a4e);padding:14px 0;overflow:hidden;border-top:2px solid rgba(168,224,74,0.2);border-bottom:2px solid rgba(168,224,74,0.2);}
 .photo-strip{display:flex;gap:14px;animation:scroll-photos 55s linear infinite;width:max-content;}
 .photo-strip:hover{animation-play-state:paused;}
 @keyframes scroll-photos{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.photo-frame{flex-shrink:0;width:220px;height:150px;border-radius:12px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.07);}
+.photo-frame{flex-shrink:0;width:200px;height:130px;border-radius:12px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.07);}
 .photo-frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;}
 .photo-frame:hover img{transform:scale(1.04);}
 .photo-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.72));padding:22px 12px 10px;font-size:11px;font-weight:500;color:rgba(255,255,255,0.82);}
@@ -145,7 +145,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 .modal-overlay{
   display:none;position:fixed;inset:0;z-index:500;
   background:rgba(5,20,22,0.95);backdrop-filter:blur(6px);
-  flex-direction:column;
+  flex-direction:column;height:100vh;box-sizing:border-box;
 }
 .modal-overlay.open{display:flex;}
 .modal-header{
@@ -168,7 +168,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 }
 .modal-leg-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.55);}
 .modal-leg-dot{width:10px;height:10px;border-radius:50%;}
-.modal-body{flex:1;overflow:hidden;padding:0;display:flex;justify-content:center;align-items:center;min-height:0;}
+.modal-body{flex:1;overflow:hidden;padding:0;display:flex;justify-content:center;align-items:center;min-height:0;height:100%;}
 .modal-body svg{height:100%;width:100%;max-width:100%;max-height:100%;display:block;}
 
 /* ══════════════════════════════
@@ -542,7 +542,7 @@ const extA={
 let worldData=null;
 
 function buildAfricaSVG(container, W, H) {
-  const svg=d3.select(container).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('width','100%');
+  const svg=d3.select(container).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('width','100%').attr('height','100%').style('display','block');
   const proj=d3.geoMercator().center([22,0]).scale(W*0.44).translate([W/2+10,H/2+20]);
   const path=d3.geoPath(proj);
   const africa=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getAN(+d.id));
@@ -571,7 +571,7 @@ function buildAfricaSVG(container, W, H) {
 }
 
 function buildSEASVG(container, W, H) {
-  const svg=d3.select(container).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('width','100%');
+  const svg=d3.select(container).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('width','100%').attr('height','100%').style('display','block');
   const proj=d3.geoMercator().center([103,16]).scale(W*0.92).translate([W/2,H/2]);
   const path=d3.geoPath(proj);
   const sea=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getSN(+d.id));
@@ -597,15 +597,14 @@ function openModal(type) {
     document.getElementById('modal-title').textContent='Southeast Asia Survey Map';
     document.getElementById('modal-meta').textContent='1 of 5 countries responded · 20% response rate';
   }
-  // Wait one frame so modal is rendered, then measure available space
   requestAnimationFrame(()=>{
-    const rect=body.getBoundingClientRect();
-    const availH=rect.height > 100 ? rect.height : window.innerHeight-130;
-    const availW=rect.width  > 100 ? rect.width  : window.innerWidth;
-    const ratio=520/620;
-    const byH=availH*ratio;
-    const W=Math.floor(Math.min(availW, byH));
-    const H=Math.floor(W/ratio);
+    // header ~65px + legend ~44px = ~109px overhead
+    const availH = window.innerHeight - 110;
+    const availW = window.innerWidth;
+    // Africa/SEA maps are taller than wide, ratio W:H = 520:620
+    const mapRatio = 520/620;
+    const W = Math.floor(Math.min(availW, availH * mapRatio));
+    const H = Math.floor(W / mapRatio);
     if(type==='africa') buildAfricaSVG(body, W, H);
     else buildSEASVG(body, W, H);
   });
