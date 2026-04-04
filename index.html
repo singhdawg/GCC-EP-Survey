@@ -170,7 +170,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 .modal-leg-dot{width:10px;height:10px;border-radius:50%;}
 .modal-body{flex:1;min-height:0;overflow:hidden;display:block;padding:0;position:relative;cursor:grab;}
 .modal-body.panning{cursor:grabbing;}
-.modal-body svg{display:block;}
+.modal-body svg{display:block;position:absolute;top:0;left:0;}
 
 /* ══════════════════════════════
    PROGRESS
@@ -653,41 +653,37 @@ function openModal(type) {
     const W = body.clientWidth  || window.innerWidth;
     const H = body.clientHeight || (window.innerHeight - 115);
 
-    // Build at 1.4x screen size so there's room to pan, centered initially
-    const MW = Math.round(W * 1.4);
-    const MH = Math.round(H * 1.4);
+    // Build SVG at screen size
+    const svgSel = type==='africa'
+      ? buildAfricaSVG(body, W, H)
+      : buildSEASVG(body, W, H);
 
-    // Build the SVG at larger size
-    const svgNode = type==='africa'
-      ? buildAfricaSVG(body, MW, MH)
-      : buildSEASVG(body, MW, MH);
+    // Size the SVG to fill the container exactly
+    svgSel.style('width', W+'px').style('height', H+'px').style('position','absolute').style('top','0').style('left','0');
 
-    // Position SVG absolutely, centered to start
-    const svg = d3.select(body).select('svg');
-    svg.style('position','absolute')
-       .style('width', MW+'px')
-       .style('height', MH+'px')
-       .style('top', Math.round((H-MH)/2)+'px')
-       .style('left', Math.round((W-MW)/2)+'px');
+    // Apply D3 zoom directly to the SVG, transforming an inner <g>
+    // Wrap all children in a zoom group
+    const svgEl = svgSel.node();
+    const zoomG = document.createElementNS('http://www.w3.org/2000/svg','g');
+    zoomG.setAttribute('class','zoom-g');
+    while(svgEl.firstChild) zoomG.appendChild(svgEl.firstChild);
+    svgEl.appendChild(zoomG);
 
-    // Add D3 zoom behaviour
     const zoom = d3.zoom()
-      .scaleExtent([0.5, 6])
+      .scaleExtent([0.8, 8])
       .on('start', ()=>body.classList.add('panning'))
       .on('end',   ()=>body.classList.remove('panning'))
       .on('zoom', (event)=>{
-        const t = event.transform;
-        // Translate the SVG element itself
-        const x = Math.round((W-MW)/2) + t.x;
-        const y = Math.round((H-MH)/2) + t.y;
-        const s = t.k;
-        svg.style('transform-origin','0 0')
-           .style('transform', `translate(${t.x}px,${t.y}px) scale(${s})`)
-           .style('left', Math.round((W-MW)/2)+'px')
-           .style('top',  Math.round((H-MH)/2)+'px');
+        d3.select(zoomG).attr('transform', event.transform);
       });
 
-    d3.select(body).call(zoom);
+    svgSel.call(zoom);
+
+    // Start at a scale that fits everything, centered
+    const initScale = 0.85;
+    const tx = W*(1-initScale)/2;
+    const ty = H*(1-initScale)/2;
+    svgSel.call(zoom.transform, d3.zoomIdentity.translate(tx,ty).scale(initScale));
   }));
 }
 function closeModal(){
