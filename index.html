@@ -168,8 +168,8 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 }
 .modal-leg-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.55);}
 .modal-leg-dot{width:10px;height:10px;border-radius:50%;}
-.modal-body{flex:1;overflow:hidden;padding:0;display:block;min-height:0;width:100%;}
-.modal-body svg{display:block;width:100% !important;height:100% !important;}
+.modal-body{flex:1;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:0;}
+.modal-body svg{display:block;max-width:100%;max-height:100%;}
 
 /* ══════════════════════════════
    PROGRESS
@@ -457,59 +457,104 @@ const strip = document.getElementById('photo-strip');
   strip.appendChild(f);
 });
 
-/* ── GLOBE ── */
+/* ── GLOBE ── canvas-texture approach for smooth country shapes ── */
 (function() {
   const canvas = document.getElementById('globe-canvas');
-  const renderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42,1,0.1,100);
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
   camera.position.z = 2.75;
   function resize() {
-    const w=canvas.parentElement.clientWidth, h=canvas.parentElement.clientHeight;
-    renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+    const w = canvas.parentElement.clientWidth, h = canvas.parentElement.clientHeight;
+    renderer.setSize(w, h); camera.aspect = w/h; camera.updateProjectionMatrix();
   }
-  resize(); window.addEventListener('resize',resize);
-  scene.add(new THREE.AmbientLight(0xffffff,0.55));
-  const sun=new THREE.DirectionalLight(0xffffff,0.9); sun.position.set(4,3,5); scene.add(sun);
-  const rim=new THREE.DirectionalLight(0xa8e04a,0.22); rim.position.set(-5,-2,-3); scene.add(rim);
-  const G=new THREE.Group(); scene.add(G);
-  const R=1.0;
-  G.add(new THREE.Mesh(new THREE.SphereGeometry(R,64,64),new THREE.MeshPhongMaterial({color:0x0e3d4a,emissive:0x061e25,shininess:55})));
-  G.add(new THREE.Mesh(new THREE.SphereGeometry(R*1.035,64,64),new THREE.MeshPhongMaterial({color:0x4aaccc,transparent:true,opacity:0.055,side:THREE.FrontSide})));
-  const cSet=new Set(['Angola','Benin','Botswana','Burundi','Cameroon','Chad','Republic of the Congo','Egypt','Equatorial Guinea','Ethiopia','Gabon','Gambia','Ghana','Kenya','Liberia','Libya','Mali','Mozambique','Namibia','Nigeria','Rwanda','Senegal','Sierra Leone','Somalia','South Sudan','Sudan','Tanzania','Togo','Tunisia','Uganda','Zambia','Cambodia']);
-  const pSet=new Set(['Algeria','Burkina Faso','Cabo Verde','Central African Republic','Comoros',"Côte d'Ivoire",'Djibouti','Eritrea','Eswatini','Guinea','Guinea-Bissau','Lesotho','Madagascar','Malawi','Mauritania','Mauritius','Morocco','Niger','São Tomé and Príncipe','Seychelles','South Africa','Democratic Republic of the Congo','Zimbabwe','Laos','Myanmar','Thailand','Vietnam']);
-  function llv(lon,lat,r){const phi=(90-lat)*Math.PI/180,theta=(lon+180)*Math.PI/180;return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));}
-  function mergeG(gs){let tot=0;gs.forEach(g=>{tot+=g.attributes.position.count;});if(!tot)return null;const p=new Float32Array(tot*3),n=new Float32Array(tot*3);let off=0;gs.forEach(g=>{p.set(g.attributes.position.array,off*3);n.set(g.attributes.normal.array,off*3);off+=g.attributes.position.count;});const o=new THREE.BufferGeometry();o.setAttribute('position',new THREE.Float32BufferAttribute(p,3));o.setAttribute('normal',new THREE.Float32BufferAttribute(n,3));return o;}
-  function buildC(world){
-    const bm=new THREE.LineBasicMaterial({color:0x7ac8d8,transparent:true,opacity:0.4});
-    topojson.feature(world,world.objects.countries).features.forEach(f=>{
-      const name=f.properties&&f.properties.name;
-      const col=cSet.has(name)?0x4a8a1e:pSet.has(name)?0x8b2020:0x1a5560;
-      const mat=new THREE.MeshPhongMaterial({color:col,emissive:new THREE.Color(col).multiplyScalar(0.28),shininess:8});
-      const polys=f.geometry.type==='Polygon'?[f.geometry.coordinates]:f.geometry.coordinates;
-      const geoms=[];
-      polys.forEach(poly=>{
-        const ring=poly[0];if(!ring||ring.length<3)return;
-        const verts=ring.map(([lo,la])=>llv(lo,la,R+0.001));
-        const pos=[],nor=[];
-        for(let i=1;i<verts.length-1;i++){[verts[0],verts[i],verts[i+1]].forEach(v=>{pos.push(v.x,v.y,v.z);const nn=v.clone().normalize();nor.push(nn.x,nn.y,nn.z);});}
-        if(pos.length<9)return;
-        const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));geoms.push(g);
-        const pts=ring.map(([lo,la])=>llv(lo,la,R+0.002));G.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),bm));
-      });
-      const mg=mergeG(geoms);if(mg)G.add(new THREE.Mesh(mg,mat));
+  resize(); window.addEventListener('resize', resize);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.8); sun.position.set(4,3,5); scene.add(sun);
+  const rim = new THREE.DirectionalLight(0xa8e04a, 0.18); rim.position.set(-5,-2,-3); scene.add(rim);
+
+  const G = new THREE.Group(); scene.add(G);
+  const R = 1.0;
+
+  // Complete and pending country IDs
+  const cSet = new Set([24,204,72,108,120,148,178,818,226,231,266,270,288,404,430,434,466,508,516,566,646,686,694,706,728,729,834,768,788,800,894,116]);
+  const pSet = new Set([12,854,132,140,174,180,384,262,232,748,324,624,426,450,454,478,480,504,562,678,686,710,716,710,418,104,764,704]);
+
+  // Draw world map onto an offscreen canvas as equirectangular texture
+  function buildTexture(world) {
+    const TW = 2048, TH = 1024;
+    const tc = document.createElement('canvas');
+    tc.width = TW; tc.height = TH;
+    const ctx = tc.getContext('2d');
+
+    // Ocean background
+    ctx.fillStyle = '#0e3d4a';
+    ctx.fillRect(0, 0, TW, TH);
+
+    // D3 equirectangular projection mapped to texture canvas
+    const proj = d3.geoEquirectangular()
+      .scale(TH / Math.PI)
+      .translate([TW/2, TH/2]);
+    const path = d3.geoPath(proj, ctx);
+
+    // Draw each country
+    topojson.feature(world, world.objects.countries).features.forEach(f => {
+      const id = +f.id;
+      ctx.beginPath();
+      path(f);
+      ctx.fillStyle = cSet.has(id) ? '#3d7a1a' : pSet.has(id) ? '#9b2020' : '#1a5a6a';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
     });
+
+    // Graticule lines
+    const grat = d3.geoGraticule()();
+    ctx.beginPath();
+    path(grat);
+    ctx.strokeStyle = 'rgba(168,224,74,0.06)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+    const tex = new THREE.CanvasTexture(tc);
+    return tex;
   }
-  let drag=false,px=0,py=0,rotY=0.3,rotX=0.15,vy=0,vx=0;
-  canvas.addEventListener('mousedown',e=>{drag=true;px=e.clientX;py=e.clientY;vy=0;vx=0;});
-  window.addEventListener('mouseup',()=>drag=false);
-  window.addEventListener('mousemove',e=>{if(!drag)return;vy=(e.clientX-px)*0.005;vx=(e.clientY-py)*0.003;px=e.clientX;py=e.clientY;});
-  canvas.addEventListener('touchstart',e=>{drag=true;px=e.touches[0].clientX;py=e.touches[0].clientY;vy=0;vx=0;},{passive:true});
-  window.addEventListener('touchend',()=>drag=false);
-  window.addEventListener('touchmove',e=>{if(!drag)return;vy=(e.touches[0].clientX-px)*0.004;vx=(e.touches[0].clientY-py)*0.003;px=e.touches[0].clientX;py=e.touches[0].clientY;},{passive:true});
-  d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(buildC);
-  (function animate(){requestAnimationFrame(animate);if(!drag){vy*=0.96;vx*=0.94;}rotY+=drag?vy:0.004+vy;rotX+=vx;rotX=Math.max(-1.1,Math.min(1.1,rotX));G.rotation.y=rotY;G.rotation.x=rotX;renderer.render(scene,camera);})();
+
+  // Ocean sphere (visible while texture loads)
+  const oceanMat = new THREE.MeshPhongMaterial({color:0x0e3d4a, emissive:0x061e25, shininess:40});
+  const globe = new THREE.Mesh(new THREE.SphereGeometry(R, 64, 64), oceanMat);
+  G.add(globe);
+
+  // Atmosphere glow
+  G.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R*1.02, 64, 64),
+    new THREE.MeshPhongMaterial({color:0x4aaccc, transparent:true, opacity:0.04, side:THREE.FrontSide})
+  ));
+
+  d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(world => {
+    const tex = buildTexture(world);
+    globe.material = new THREE.MeshPhongMaterial({map: tex, specular:0x111111, shininess:20});
+    globe.material.needsUpdate = true;
+  });
+
+  let drag=false, px=0, py=0, rotY=0.3, rotX=0.15, vy=0, vx=0;
+  canvas.addEventListener('mousedown', e=>{drag=true; px=e.clientX; py=e.clientY; vy=0; vx=0;});
+  window.addEventListener('mouseup', ()=>drag=false);
+  window.addEventListener('mousemove', e=>{if(!drag)return; vy=(e.clientX-px)*0.005; vx=(e.clientY-py)*0.003; px=e.clientX; py=e.clientY;});
+  canvas.addEventListener('touchstart', e=>{drag=true; px=e.touches[0].clientX; py=e.touches[0].clientY; vy=0; vx=0;},{passive:true});
+  window.addEventListener('touchend', ()=>drag=false);
+  window.addEventListener('touchmove', e=>{if(!drag)return; vy=(e.touches[0].clientX-px)*0.004; vx=(e.touches[0].clientY-py)*0.003; px=e.touches[0].clientX; py=e.touches[0].clientY;},{passive:true});
+  (function animate(){
+    requestAnimationFrame(animate);
+    if(!drag){vy*=0.96; vx*=0.94;}
+    rotY += drag ? vy : 0.0025+vy;
+    rotX += vx;
+    rotX = Math.max(-1.1, Math.min(1.1, rotX));
+    G.rotation.y = rotY; G.rotation.x = rotX;
+    renderer.render(scene, camera);
+  })();
 })();
 
 /* ── MAP DATA ── */
@@ -603,11 +648,9 @@ function openModal(type) {
     document.getElementById('modal-title').textContent='Southeast Asia Survey Map';
     document.getElementById('modal-meta').textContent='1 of 5 countries responded · 20% response rate';
   }
-  // Use two rAF frames to ensure modal is fully laid out before measuring
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    const rect = body.getBoundingClientRect();
-    const W = Math.floor(rect.width)  || window.innerWidth;
-    const H = Math.floor(rect.height) || (window.innerHeight - 112);
+    const W = body.clientWidth   || window.innerWidth;
+    const H = body.clientHeight  || (window.innerHeight - 115);
     if(type==='africa') buildAfricaSVG(body, W, H);
     else buildSEASVG(body, W, H);
   }));
