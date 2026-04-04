@@ -44,7 +44,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 .nav-btn.active{background:var(--lime);color:var(--navy);border-color:var(--lime);font-weight:600;}
 
 /* ── SECTIONS ── */
-.page-section{display:none;min-height:100vh;padding-top:104px;}
+.page-section{display:none;min-height:100vh;padding-top:120px;}
 .page-section.active{display:block;}
 
 /* ══════════════════════════════
@@ -98,7 +98,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 /* ══════════════════════════════
    ABOUT
 ══════════════════════════════ */
-.about-sec{background:var(--cream-lt);padding:80px 80px 100px;}
+.about-sec{background:var(--cream-lt);padding:100px 80px 100px;}
 .about-inner{max-width:1140px;margin:0 auto;}
 .sec-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--copper);margin-bottom:14px;}
 .sec-title{font-family:'Playfair Display',serif;font-size:clamp(30px,3.5vw,46px);font-weight:700;line-height:1.12;color:var(--navy);margin-bottom:20px;}
@@ -115,7 +115,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 /* ══════════════════════════════
    SURVEY MAP
 ══════════════════════════════ */
-.maps-sec{background:var(--navy);padding:80px 80px 100px;}
+.maps-sec{background:var(--navy);padding:100px 80px 100px;}
 .maps-inner{max-width:1200px;margin:0 auto;}
 .maps-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px;}
 .mcard{
@@ -168,13 +168,13 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 }
 .modal-leg-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.55);}
 .modal-leg-dot{width:10px;height:10px;border-radius:50%;}
-.modal-body{flex:1;overflow:hidden;padding:8px 16px;display:flex;justify-content:center;align-items:stretch;}
-.modal-body svg{height:100%;width:auto;max-width:100%;display:block;}
+.modal-body{flex:1;overflow:hidden;padding:0;display:flex;justify-content:center;align-items:center;min-height:0;}
+.modal-body svg{height:100%;width:100%;max-width:100%;max-height:100%;display:block;}
 
 /* ══════════════════════════════
    PROGRESS
 ══════════════════════════════ */
-.prog-sec{background:var(--offwhite);padding:80px 80px 100px;}
+.prog-sec{background:var(--offwhite);padding:100px 80px 100px;}
 .prog-inner{max-width:1140px;margin:0 auto;}
 
 /* Overall progress cards */
@@ -590,26 +590,25 @@ function openModal(type) {
   body.innerHTML='';
   modal.classList.add('open');
   document.body.style.overflow='hidden';
-  // Use nearly full viewport, accounting for header (~90px) and legend (~40px)
-  const vh=window.innerHeight-140;
-  const vw=window.innerWidth-32;
   if(type==='africa'){
     document.getElementById('modal-title').textContent='Africa Survey Map';
     document.getElementById('modal-meta').textContent='31 of 55 countries responded · 56.4% response rate';
-    const ratio=520/620;
-    const byHeight=vh*ratio;
-    const W=Math.min(vw, byHeight);
-    const H=W/ratio;
-    buildAfricaSVG(body, Math.round(W), Math.round(H));
   }else{
     document.getElementById('modal-title').textContent='Southeast Asia Survey Map';
     document.getElementById('modal-meta').textContent='1 of 5 countries responded · 20% response rate';
-    const ratio=520/620;
-    const byHeight=vh*ratio;
-    const W=Math.min(vw, byHeight);
-    const H=W/ratio;
-    buildSEASVG(body, Math.round(W), Math.round(H));
   }
+  // Wait one frame so modal is rendered, then measure available space
+  requestAnimationFrame(()=>{
+    const rect=body.getBoundingClientRect();
+    const availH=rect.height > 100 ? rect.height : window.innerHeight-130;
+    const availW=rect.width  > 100 ? rect.width  : window.innerWidth;
+    const ratio=520/620;
+    const byH=availH*ratio;
+    const W=Math.floor(Math.min(availW, byH));
+    const H=Math.floor(W/ratio);
+    if(type==='africa') buildAfricaSVG(body, W, H);
+    else buildSEASVG(body, W, H);
+  });
 }
 function closeModal(){
   document.getElementById('map-modal').classList.remove('open');
