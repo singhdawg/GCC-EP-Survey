@@ -168,8 +168,8 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 }
 .modal-leg-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.55);}
 .modal-leg-dot{width:10px;height:10px;border-radius:50%;}
-.modal-body{flex:1;overflow:hidden;padding:0;display:flex;justify-content:center;align-items:center;min-height:0;height:100%;}
-.modal-body svg{height:100%;width:100%;max-width:100%;max-height:100%;display:block;}
+.modal-body{flex:1;overflow:hidden;padding:0;display:block;min-height:0;width:100%;}
+.modal-body svg{display:block;width:100% !important;height:100% !important;}
 
 /* ══════════════════════════════
    PROGRESS
@@ -542,7 +542,10 @@ const extA={
 let worldData=null;
 
 function buildAfricaSVG(container, W, H) {
-  const svg=d3.select(container).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('width','100%').attr('height','100%').style('display','block');
+  const svg=d3.select(container).append('svg')
+    .attr('viewBox',`0 0 ${W} ${H}`)
+    .attr('preserveAspectRatio','xMidYMid meet')
+    .style('width','100%').style('height','100%').style('display','block');
   const proj=d3.geoMercator().center([22,0]).scale(W*0.44).translate([W/2+10,H/2+20]);
   const path=d3.geoPath(proj);
   const africa=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getAN(+d.id));
@@ -571,7 +574,10 @@ function buildAfricaSVG(container, W, H) {
 }
 
 function buildSEASVG(container, W, H) {
-  const svg=d3.select(container).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('width','100%').attr('height','100%').style('display','block');
+  const svg=d3.select(container).append('svg')
+    .attr('viewBox',`0 0 ${W} ${H}`)
+    .attr('preserveAspectRatio','xMidYMid meet')
+    .style('width','100%').style('height','100%').style('display','block');
   const proj=d3.geoMercator().center([103,16]).scale(W*0.92).translate([W/2,H/2]);
   const path=d3.geoPath(proj);
   const sea=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getSN(+d.id));
@@ -597,17 +603,14 @@ function openModal(type) {
     document.getElementById('modal-title').textContent='Southeast Asia Survey Map';
     document.getElementById('modal-meta').textContent='1 of 5 countries responded · 20% response rate';
   }
-  requestAnimationFrame(()=>{
-    // header ~65px + legend ~44px = ~109px overhead
-    const availH = window.innerHeight - 110;
-    const availW = window.innerWidth;
-    // Africa/SEA maps are taller than wide, ratio W:H = 520:620
-    const mapRatio = 520/620;
-    const W = Math.floor(Math.min(availW, availH * mapRatio));
-    const H = Math.floor(W / mapRatio);
+  // Use two rAF frames to ensure modal is fully laid out before measuring
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const rect = body.getBoundingClientRect();
+    const W = Math.floor(rect.width)  || window.innerWidth;
+    const H = Math.floor(rect.height) || (window.innerHeight - 112);
     if(type==='africa') buildAfricaSVG(body, W, H);
     else buildSEASVG(body, W, H);
-  });
+  }));
 }
 function closeModal(){
   document.getElementById('map-modal').classList.remove('open');
