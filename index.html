@@ -130,7 +130,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 .mcard-pct.af{color:var(--lime);}.mcard-pct.sea{color:var(--lavender);}
 .pbar-wrap{height:3px;background:rgba(255,255,255,0.08);border-radius:4px;margin-bottom:18px;overflow:hidden;}
 .pbar{height:100%;border-radius:4px;}
-.pbar.af{background:var(--lime);width:56.4%;}.pbar.sea{background:var(--lavender);width:20%;}
+.pbar.af{background:var(--lime);width:56.4%;}.pbar.sea{background:var(--lavender);width:33%;}
 .mlegend{display:flex;gap:18px;margin-bottom:12px;}
 .mleg-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);}
 .mleg-dot{width:9px;height:9px;border-radius:50%;}
@@ -238,6 +238,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
     <button class="nav-btn active" onclick="showSection('home')">Home</button>
     <button class="nav-btn" onclick="showSection('about')">About</button>
     <button class="nav-btn" onclick="showSection('maps')">Survey Map</button>
+    <button class="nav-btn" onclick="showSection('results')">Survey Results</button>
     <button class="nav-btn" onclick="showSection('progress')">Progress</button>
   </div>
 </nav>
@@ -262,9 +263,9 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
         </div>
       </div>
       <div class="hero-stats">
-        <div class="hstat"><div class="hstat-n">60</div><div class="hstat-l">Countries</div></div>
-        <div class="hstat"><div class="hstat-n">32</div><div class="hstat-l">Responses</div></div>
-        <div class="hstat"><div class="hstat-n">53%</div><div class="hstat-l">Response rate</div></div>
+        <div class="hstat"><div class="hstat-n">61</div><div class="hstat-l">Countries</div></div>
+        <div class="hstat"><div class="hstat-n">33</div><div class="hstat-l">Responses</div></div>
+        <div class="hstat"><div class="hstat-n">54%</div><div class="hstat-l">Response rate</div></div>
         <div class="hstat"><div class="hstat-n">2</div><div class="hstat-l">Regions</div></div>
       </div>
     </div>
@@ -325,8 +326,8 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
         </div>
       </div>
       <div class="mcard" onclick="openModal('sea')">
-        <div class="mcard-hdr"><div class="mcard-title">Southeast Asia</div><div class="mcard-pct sea">20%</div></div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.38);margin-bottom:10px;">1 of 5 countries responded</div>
+        <div class="mcard-hdr"><div class="mcard-title">Southeast Asia</div><div class="mcard-pct sea">33%</div></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.38);margin-bottom:10px;">2 of 6 countries responded</div>
         <div class="pbar-wrap"><div class="pbar sea"></div></div>
         <div class="mlegend">
           <div class="mleg-item"><div class="mleg-dot" style="background:#5a9e2f"></div>Complete (1)</div>
@@ -343,6 +344,49 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 </div>
 
 <!-- ══ PROGRESS ══ -->
+<div id="sec-results" class="page-section maps-sec">
+  <div class="maps-inner">
+    <div class="sec-eyebrow" style="color:var(--lime)">Data & Analysis</div>
+    <h2 class="sec-title" style="color:var(--white)">Survey Results</h2>
+    <p style="color:rgba(232,223,200,0.55);font-size:15px;margin-top:4px;">Click either map to enlarge and interact.</p>
+    <div class="maps-grid">
+      <div class="mcard" onclick="openResultsModal('africa')">
+        <div class="mcard-hdr"><div class="mcard-title">Africa</div></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.38);margin-bottom:10px;">31 of 55 countries surveyed</div>
+        <div id="africa-results-preview"></div>
+        <div class="expand-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          Click to enlarge &amp; interact
+        </div>
+      </div>
+      <div class="mcard" onclick="openResultsModal('sea')">
+        <div class="mcard-hdr"><div class="mcard-title">Southeast Asia &amp; Mongolia</div></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.38);margin-bottom:10px;">2 of 6 countries surveyed</div>
+        <div id="sea-results-preview"></div>
+        <div class="expand-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          Click to enlarge &amp; interact
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Results Modal -->
+<div class="modal-overlay" id="results-modal">
+  <div class="modal-header">
+    <div>
+      <div class="modal-title" id="results-modal-title"></div>
+      <div class="modal-meta" id="results-modal-meta"></div>
+    </div>
+    <button class="modal-close" onclick="closeResultsModal()">&#x2715;</button>
+  </div>
+  <div class="modal-legend">
+    <span style="font-size:12px;color:rgba(255,255,255,0.3);margin-left:auto;">Scroll to zoom · Drag to pan · Hover for details</span>
+  </div>
+  <div class="modal-body" id="results-modal-body"></div>
+</div>
+
 <div id="sec-progress" class="page-section prog-sec">
   <div class="prog-inner">
     <div class="sec-eyebrow">Survey Progress</div>
@@ -351,9 +395,9 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
     <div class="prog-overview">
       <div class="prog-card">
         <div class="prog-card-label">Overall progress</div>
-        <div class="prog-card-num">32 <span>/ 60</span></div>
+        <div class="prog-card-num">33 <span>/ 61</span></div>
         <div class="prog-bar-outer"><div class="prog-bar-fill total" style="width:53.3%"></div></div>
-        <div class="prog-card-sub">53.3% overall response rate</div>
+        <div class="prog-card-sub">54.1% overall response rate</div>
       </div>
       <div class="prog-card">
         <div class="prog-card-label">Africa</div>
@@ -363,9 +407,9 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
       </div>
       <div class="prog-card">
         <div class="prog-card-label">Southeast Asia</div>
-        <div class="prog-card-num">1 <span>/ 5</span></div>
-        <div class="prog-bar-outer"><div class="prog-bar-fill sea" style="width:20%"></div></div>
-        <div class="prog-card-sub">20% — 4 countries still pending</div>
+        <div class="prog-card-num">2 <span>/ 6</span></div>
+        <div class="prog-bar-outer"><div class="prog-bar-fill sea" style="width:33%"></div></div>
+        <div class="prog-card-sub">33% — 4 countries still pending</div>
       </div>
     </div>
 
@@ -408,7 +452,7 @@ function showSection(id) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('sec-' + id).classList.add('active');
   const btns = document.querySelectorAll('.nav-btn');
-  const idx = ['home','about','maps','progress'].indexOf(id);
+  const idx = ['home','about','maps','results','progress'].indexOf(id);
   if (idx >= 0) btns[idx].classList.add('active');
   window.scrollTo(0,0);
 }
@@ -422,8 +466,8 @@ const tickerItems = [
   "Mali · Complete","Mozambique · Complete","Namibia · Complete","Nigeria · Complete",
   "Rwanda · Complete","Senegal · Complete","Sierra Leone · Complete","Somalia · Complete",
   "South Sudan · Complete","Sudan · Complete","Tanzania · Complete","Togo · Complete",
-  "Tunisia · Complete","Uganda · Complete","Zambia · Complete","Cambodia · Complete",
-  "56% Africa Response Rate","20% SE Asia Response Rate","60 Countries Surveyed","32 Responses Received",
+  "Tunisia · Complete","Uganda · Complete","Zambia · Complete","Cambodia · Complete","Mongolia · Complete",
+  "56% Africa Response Rate","33% SE Asia Response Rate","61 Countries Surveyed","33 Responses Received",
 ];
 ['ticker-top'].forEach((id,ri) => {
   const track = document.getElementById(id);
@@ -479,7 +523,7 @@ const strip = document.getElementById('photo-strip');
   const R = 1.0;
 
   // Complete and pending country IDs
-  const cSet = new Set([24,204,72,108,120,148,178,818,226,231,266,270,288,404,430,434,466,508,516,566,646,686,694,706,728,729,834,768,788,800,894,116]);
+  const cSet = new Set([24,204,72,108,120,148,178,818,226,231,266,270,288,404,430,434,466,508,516,566,646,686,694,706,728,729,834,768,788,800,894,116,496]);
   const pSet = new Set([12,854,132,140,174,180,384,262,232,748,324,624,426,450,454,478,480,504,562,678,686,710,716,710,418,104,764,704]);
 
   // Draw world map onto an offscreen canvas as equirectangular texture
@@ -561,7 +605,7 @@ const strip = document.getElementById('photo-strip');
 /* ── MAP DATA ── */
 const africaComplete=new Set(['Angola','Benin','Botswana','Burundi','Cameroon','Chad','Congo-Brazzaville','Egypt','Equatorial Guinea','Ethiopia','Gabon','Gambia','Ghana','Kenya','Liberia','Libya','Mali','Mozambique','Namibia','Nigeria','Rwanda','Senegal','Sierra Leone','Somalia','South Sudan','Sudan','Tanzania','Togo','Tunisia','Uganda','Zambia']);
 const africaPending=new Set(['Algeria','Burkina Faso','Cabo Verde','Central African Republic','Comoros',"Côte d'Ivoire",'Djibouti','Eritrea','Eswatini','Guinea','Guinea-Bissau','Lesotho','Madagascar','Malawi','Mauritania','Mauritius','Morocco','Niger',"São Tomé and Príncipe",'Seychelles','South Africa','DR Congo','Zimbabwe']);
-const seaComplete=new Set(['Cambodia']);
+const seaComplete=new Set(['Cambodia','Mongolia']);
 const seaPending=new Set(['Laos','Myanmar','Thailand','Vietnam']);
 const africaIslands=[
   {name:'Cabo Verde',lon:-23.0,lat:15.1,dx:14,dy:-12,anchor:'start'},
@@ -571,7 +615,7 @@ const africaIslands=[
   {name:'Seychelles',lon:55.5,lat:-4.6,dx:14,dy:-12,anchor:'start'},
 ];
 function getAN(id){const m={12:'Algeria',24:'Angola',204:'Benin',72:'Botswana',854:'Burkina Faso',108:'Burundi',132:'Cabo Verde',120:'Cameroon',140:'Central African Republic',148:'Chad',174:'Comoros',178:'Congo-Brazzaville',180:'DR Congo',384:"Côte d'Ivoire",262:'Djibouti',818:'Egypt',226:'Equatorial Guinea',232:'Eritrea',231:'Ethiopia',266:'Gabon',270:'Gambia',288:'Ghana',324:'Guinea',624:'Guinea-Bissau',404:'Kenya',426:'Lesotho',430:'Liberia',434:'Libya',450:'Madagascar',454:'Malawi',466:'Mali',478:'Mauritania',480:'Mauritius',504:'Morocco',508:'Mozambique',516:'Namibia',562:'Niger',566:'Nigeria',646:'Rwanda',678:"São Tomé and Príncipe",686:'Senegal',694:'Sierra Leone',706:'Somalia',710:'South Africa',729:'Sudan',728:'South Sudan',716:'Zimbabwe',768:'Togo',788:'Tunisia',800:'Uganda',834:'Tanzania',894:'Zambia',732:'Western Sahara'};return m[id]||null;}
-function getSN(id){return {116:'Cambodia',418:'Laos',104:'Myanmar',764:'Thailand',704:'Vietnam'}[id]||null;}
+function getSN(id){return {116:'Cambodia',418:'Laos',104:'Myanmar',764:'Thailand',704:'Vietnam',496:'Mongolia'}[id]||null;}
 
 const CC='#5a9e2f',CP='#c0392b',CO='#1e5560',CS='rgba(255,255,255,0.14)',CL='rgba(255,255,255,0.28)';
 const tt=document.getElementById('map-tt');
@@ -624,14 +668,77 @@ function buildSEASVG(container, W, H) {
     .attr('viewBox',`0 0 ${W} ${H}`)
     .attr('preserveAspectRatio','xMidYMid meet')
     .style('display','block');
-  const proj=d3.geoMercator().center([103,16]).scale(W*0.92).translate([W/2,H/2]);
+
+  // Background
+  svg.append('rect').attr('width',W).attr('height',H).attr('fill','#0d3b3e');
+
+  // SE Asia projection — shift down a bit to leave room for Mongolia inset
+  const seaCountries=['Cambodia','Laos','Myanmar','Thailand','Vietnam'];
+  const proj=d3.geoMercator().center([103,17]).scale(W*0.85).translate([W/2, H*0.62]);
   const path=d3.geoPath(proj);
-  const sea=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getSN(+d.id));
-  svg.selectAll('path').data(sea).join('path').attr('d',path).attr('stroke',CS).attr('stroke-width',0.5)
+  const sea=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>{
+    const n=getSN(+d.id);
+    return n && seaCountries.includes(n); // exclude Mongolia from main map
+  });
+  svg.selectAll('path.sea').data(sea).join('path').attr('class','sea').attr('d',path)
+    .attr('stroke',CS).attr('stroke-width',0.5)
     .attr('fill',d=>{const n=getSN(+d.id);return seaComplete.has(n)?CC:seaPending.has(n)?CP:CO;})
-    .style('cursor','pointer').on('mousemove',(e,d)=>{const n=getSN(+d.id);tip(e,n,seaComplete.has(n)?'Complete':'Pending');}).on('mouseleave',untip);
+    .style('cursor','pointer')
+    .on('mousemove',(e,d)=>{const n=getSN(+d.id);tip(e,n,seaComplete.has(n)?'Complete':'Pending');})
+    .on('mouseleave',untip);
+
+  // Labels for SE Asia countries
   const ll=svg.append('g');
-  sea.forEach(d=>{const n=getSN(+d.id);if(!n)return;const c=path.centroid(d);if(!c||isNaN(c[0]))return;const area=path.area(d);if(area<80)return;const fs=area>8000?W>600?12:9:area>2000?W>600?11:8:W>600?9:7;ll.append('text').attr('x',c[0]).attr('y',c[1]+2).attr('text-anchor','middle').attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2.5px').text(n);});
+  sea.forEach(d=>{
+    const n=getSN(+d.id);if(!n)return;
+    const c=path.centroid(d);if(!c||isNaN(c[0]))return;
+    const area=path.area(d);if(area<80)return;
+    const fs=area>8000?W>600?12:9:area>2000?W>600?11:8:W>600?9:7;
+    ll.append('text').attr('x',c[0]).attr('y',c[1]+2).attr('text-anchor','middle')
+      .attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif')
+      .attr('fill','#fff').attr('font-weight','500')
+      .attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2.5px').text(n);
+  });
+
+  // Mongolia inset — top right area of the SVG
+  const mW = W * 0.38;
+  const mH = H * 0.18;
+  const mX = W * 0.58;
+  const mY = H * 0.04;
+
+  // Inset background + border
+  svg.append('rect').attr('x',mX-8).attr('y',mY-8).attr('width',mW+16).attr('height',mH+16)
+    .attr('rx',8).attr('fill','rgba(13,59,62,0.85)').attr('stroke','rgba(168,224,74,0.2)').attr('stroke-width',1);
+
+  // Mongolia projection fitted to inset box
+  const mongFeature = topojson.feature(worldData,worldData.objects.countries).features.find(d=>+d.id===496);
+  if(mongFeature){
+    const mongProj = d3.geoMercator().fitExtent([[mX,mY],[mX+mW,mY+mH]], mongFeature);
+    const mongPath = d3.geoPath(mongProj);
+    svg.append('path')
+      .datum(mongFeature)
+      .attr('d', mongPath)
+      .attr('fill', CC)
+      .attr('stroke', CS)
+      .attr('stroke-width', 0.5)
+      .style('cursor','pointer')
+      .on('mousemove', e=>tip(e,'Mongolia','Complete'))
+      .on('mouseleave', untip);
+
+    // Mongolia label
+    const mc = mongPath.centroid(mongFeature);
+    svg.append('text').attr('x',mc[0]).attr('y',mc[1]+2).attr('text-anchor','middle')
+      .attr('font-size',W>600?'11px':'8px').attr('font-family','DM Sans,sans-serif')
+      .attr('fill','#fff').attr('font-weight','500')
+      .attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2px')
+      .text('Mongolia');
+  }
+
+  // Inset label
+  svg.append('text').attr('x',mX-4).attr('y',mY-14).attr('font-size','9px')
+    .attr('font-family','DM Sans,sans-serif').attr('fill','rgba(255,255,255,0.35)')
+    .attr('font-weight','600').attr('letter-spacing','0.08em').text('INSET');
+
   return svg;
 }
 
@@ -647,7 +754,7 @@ function openModal(type) {
     document.getElementById('modal-meta').textContent='31 of 55 countries responded · 56.4% response rate';
   }else{
     document.getElementById('modal-title').textContent='Southeast Asia Survey Map';
-    document.getElementById('modal-meta').textContent='1 of 5 countries responded · 20% response rate';
+    document.getElementById('modal-meta').textContent='2 of 6 countries responded · 33% response rate';
   }
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     const W = body.clientWidth  || window.innerWidth;
@@ -694,9 +801,114 @@ function closeModal(){
 document.getElementById('map-modal').addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
+/* ── RESULTS MODAL ── */
+// Neutral color for results maps — all countries same teal, no green/red yet
+const CR='#2a7a8a'; // neutral surveyed color
+
+function buildAfricaResultsSVG(container, W, H) {
+  const svg=d3.select(container).append('svg')
+    .attr('viewBox',`0 0 ${W} ${H}`)
+    .attr('preserveAspectRatio','xMidYMid meet')
+    .style('display','block');
+  svg.append('rect').attr('width',W).attr('height',H).attr('fill','#0d3b3e');
+  const proj=d3.geoMercator().center([22,0]).scale(W*0.44).translate([W/2+10,H/2+20]);
+  const path=d3.geoPath(proj);
+  const africa=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getAN(+d.id));
+  svg.selectAll('path').data(africa).join('path').attr('d',path)
+    .attr('stroke',CS).attr('stroke-width',0.5).attr('fill',CR)
+    .style('cursor','pointer')
+    .on('mousemove',(e,d)=>{const n=getAN(+d.id);tip(e,n,'');})
+    .on('mouseleave',untip);
+  // Labels
+  const ll=svg.append('g');
+  africa.forEach(d=>{
+    const n=getAN(+d.id);if(!n)return;
+    const c=path.centroid(d);if(!c||isNaN(c[0]))return;
+    const area=path.area(d);
+    const disp=n.replace('Congo-Brazzaville','Congo-B').replace('Central African Republic','Cent. African Rep.').replace('Western Sahara','W. Sahara').replace('Equatorial Guinea','Eq. Guinea');
+    const extA_={'Gambia':[58,212],'Guinea-Bissau':[38,242],'Sierra Leone':[38,270],'Liberia':[44,292],'Togo':[472,270],'Benin':[484,254],'Rwanda':[482,304],'Burundi':[490,318],'Djibouti':[486,216],'Eritrea':[492,197],'Lesotho':[476,432],'Eswatini':[486,414],'Equatorial Guinea':[60,314]};
+    const ext=extA_[n];
+    if(ext){const[lx,ly]=ext;ll.append('line').attr('x1',c[0]).attr('y1',c[1]).attr('x2',lx<W/2?lx+5:lx-5).attr('y2',ly).attr('stroke',CL).attr('stroke-width',0.7).attr('stroke-dasharray','2,2');ll.append('text').attr('x',lx<W/2?lx-2:lx+2).attr('y',ly+3).attr('text-anchor',lx<W/2?'end':'start').attr('font-size',W>600?'8px':'6px').attr('font-family','DM Sans,sans-serif').attr('fill','#c8d8dc').attr('font-weight','500').text(disp);}
+    else{if(area<70*(W/520)**2)return;const fs=area>3000*(W/520)**2?W>600?9:7:area>800*(W/520)**2?W>600?8:6.5:W>600?7:5.5;ll.append('text').attr('x',c[0]).attr('y',c[1]+2).attr('text-anchor','middle').attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2px').text(disp);}
+  });
+  return svg;
+}
+
+function buildSEAResultsSVG(container, W, H) {
+  const svg=d3.select(container).append('svg')
+    .attr('viewBox',`0 0 ${W} ${H}`)
+    .attr('preserveAspectRatio','xMidYMid meet')
+    .style('display','block');
+  svg.append('rect').attr('width',W).attr('height',H).attr('fill','#0d3b3e');
+  const seaCountries=['Cambodia','Laos','Myanmar','Thailand','Vietnam'];
+  const proj=d3.geoMercator().center([103,17]).scale(W*0.85).translate([W/2,H*0.62]);
+  const path=d3.geoPath(proj);
+  const sea=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>{const n=getSN(+d.id);return n&&seaCountries.includes(n);});
+  svg.selectAll('path.sea').data(sea).join('path').attr('class','sea').attr('d',path)
+    .attr('stroke',CS).attr('stroke-width',0.5).attr('fill',CR)
+    .style('cursor','pointer')
+    .on('mousemove',(e,d)=>{const n=getSN(+d.id);tip(e,n,'');})
+    .on('mouseleave',untip);
+  const ll=svg.append('g');
+  sea.forEach(d=>{const n=getSN(+d.id);if(!n)return;const c=path.centroid(d);if(!c||isNaN(c[0]))return;const area=path.area(d);if(area<80)return;const fs=area>8000?W>600?12:9:area>2000?W>600?11:8:W>600?9:7;ll.append('text').attr('x',c[0]).attr('y',c[1]+2).attr('text-anchor','middle').attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2.5px').text(n);});
+  // Mongolia inset
+  const mW=W*0.38,mH=H*0.18,mX=W*0.58,mY=H*0.04;
+  svg.append('rect').attr('x',mX-8).attr('y',mY-8).attr('width',mW+16).attr('height',mH+16).attr('rx',8).attr('fill','rgba(13,59,62,0.85)').attr('stroke','rgba(168,224,74,0.2)').attr('stroke-width',1);
+  const mongFeature=topojson.feature(worldData,worldData.objects.countries).features.find(d=>+d.id===496);
+  if(mongFeature){
+    const mongProj=d3.geoMercator().fitExtent([[mX,mY],[mX+mW,mY+mH]],mongFeature);
+    const mongPath=d3.geoPath(mongProj);
+    svg.append('path').datum(mongFeature).attr('d',mongPath).attr('fill',CR).attr('stroke',CS).attr('stroke-width',0.5).style('cursor','pointer').on('mousemove',e=>tip(e,'Mongolia','')).on('mouseleave',untip);
+    const mc=mongPath.centroid(mongFeature);
+    svg.append('text').attr('x',mc[0]).attr('y',mc[1]+2).attr('text-anchor','middle').attr('font-size',W>600?'11px':'8px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2px').text('Mongolia');
+  }
+  svg.append('text').attr('x',mX-4).attr('y',mY-14).attr('font-size','9px').attr('font-family','DM Sans,sans-serif').attr('fill','rgba(255,255,255,0.35)').attr('font-weight','600').attr('letter-spacing','0.08em').text('INSET');
+  return svg;
+}
+
+function openResultsModal(type) {
+  const modal=document.getElementById('results-modal');
+  const body=document.getElementById('results-modal-body');
+  body.innerHTML='';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+  if(type==='africa'){
+    document.getElementById('results-modal-title').textContent='Africa — Survey Results';
+    document.getElementById('results-modal-meta').textContent='31 countries surveyed';
+  }else{
+    document.getElementById('results-modal-title').textContent='Southeast Asia & Mongolia — Survey Results';
+    document.getElementById('results-modal-meta').textContent='2 countries surveyed';
+  }
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const W=body.clientWidth||window.innerWidth;
+    const H=body.clientHeight||(window.innerHeight-115);
+    const svgSel=type==='africa'?buildAfricaResultsSVG(body,W,H):buildSEAResultsSVG(body,W,H);
+    svgSel.style('width',W+'px').style('height',H+'px').style('position','absolute').style('top','0').style('left','0');
+    const svgEl=svgSel.node();
+    const zoomG=document.createElementNS('http://www.w3.org/2000/svg','g');
+    zoomG.setAttribute('class','zoom-g');
+    while(svgEl.firstChild) zoomG.appendChild(svgEl.firstChild);
+    svgEl.appendChild(zoomG);
+    const zoom=d3.zoom().scaleExtent([0.8,8])
+      .on('start',()=>body.classList.add('panning'))
+      .on('end',()=>body.classList.remove('panning'))
+      .on('zoom',(event)=>{d3.select(zoomG).attr('transform',event.transform);});
+    svgSel.call(zoom);
+    const initScale=0.85;
+    svgSel.call(zoom.transform,d3.zoomIdentity.translate(W*(1-initScale)/2,H*(1-initScale)/2).scale(initScale));
+  }));
+}
+function closeResultsModal(){
+  document.getElementById('results-modal').classList.remove('open');
+  document.body.style.overflow='';
+  untip();
+}
+document.getElementById('results-modal').addEventListener('keydown',e=>{if(e.key==='Escape')closeResultsModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('results-modal').classList.contains('open'))closeResultsModal();});
+
 /* ── COUNTRY LISTS ── */
 const africaAll=[['Algeria','p'],['Angola','c'],['Benin','c'],['Botswana','c'],['Burkina Faso','p'],['Burundi','c'],['Cabo Verde','p'],['Cameroon','c'],['Central African Republic','p'],['Chad','c'],['Comoros','p'],['Congo (Brazzaville)','c'],['DR Congo (Kinshasa)','p'],["Côte d'Ivoire",'p'],['Djibouti','p'],['Egypt','c'],['Equatorial Guinea','c'],['Eritrea','p'],['Eswatini','p'],['Ethiopia','c'],['Gabon','c'],['Gambia','c'],['Ghana','c'],['Guinea','p'],['Guinea-Bissau','p'],['Kenya','c'],['Lesotho','p'],['Liberia','c'],['Libya','c'],['Madagascar','p'],['Malawi','p'],['Mali','c'],['Mauritania','p'],['Mauritius','p'],['Morocco','p'],['Mozambique','c'],['Namibia','c'],['Niger','p'],['Nigeria','c'],['Rwanda','c'],["São Tomé and Príncipe",'p'],['Senegal','c'],['Seychelles','p'],['Sierra Leone','c'],['Somalia','c'],['South Africa','p'],['South Sudan','c'],['Sudan','c'],['Tanzania','c'],['Togo','c'],['Tunisia','c'],['Uganda','c'],['Zambia','c'],['Zimbabwe','p']];
-const seaAll=[['Cambodia','c'],['Laos','p'],['Myanmar','p'],['Thailand','p'],['Vietnam','p']];
+const seaAll=[['Cambodia','c'],['Mongolia','c'],['Laos','p'],['Myanmar','p'],['Thailand','p'],['Vietnam','p']];
 function buildList(data,id){const el=document.getElementById(id);data.forEach(([name,s])=>{const d=document.createElement('div');d.className='cpill';d.innerHTML=`<div class="sdot ${s}"></div><span>${name}</span>`;el.appendChild(d);});}
 buildList(africaAll,'al');buildList(seaAll,'sl');
 function showTab(id,btn){document.querySelectorAll('.cgrid').forEach(e=>e.classList.add('hidden'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('on'));document.getElementById(id).classList.remove('hidden');btn.classList.add('on');}
@@ -706,6 +918,8 @@ d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(w
   worldData = world;
   buildAfricaSVG('#africa-map-preview', 520, 460);
   buildSEASVG('#sea-map-preview', 520, 460);
+  buildAfricaResultsSVG('#africa-results-preview', 520, 460);
+  buildSEAResultsSVG('#sea-results-preview', 520, 460);
 });
 
 </script>
