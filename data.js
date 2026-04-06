@@ -201,7 +201,9 @@ function buildAfricaSVG(container, W, H) {
   const svg=d3.select(container).append('svg')
     .attr('viewBox',`0 0 ${W} ${H}`)
     .attr('preserveAspectRatio','xMidYMid meet')
-    .style('display','block');
+    .style('display','block')
+    .attr('width', W)
+    .attr('height', H);
   const proj=d3.geoMercator().center([22,0]).scale(W*0.44).translate([W/2+10,H/2+20]);
   const path=d3.geoPath(proj);
   const africa=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getAN(+d.id));
@@ -233,7 +235,9 @@ function buildSEASVG(container, W, H) {
   const svg=d3.select(container).append('svg')
     .attr('viewBox',`0 0 ${W} ${H}`)
     .attr('preserveAspectRatio','xMidYMid meet')
-    .style('display','block');
+    .style('display','block')
+    .attr('width', W)
+    .attr('height', H);
 
   // Background
   svg.append('rect').attr('width',W).attr('height',H).attr('fill','#0d3b3e');
@@ -432,7 +436,9 @@ function buildAfricaResultsSVG(container, W, H) {
   const svg=d3.select(container).append('svg')
     .attr('viewBox',`0 0 ${W} ${H}`)
     .attr('preserveAspectRatio','xMidYMid meet')
-    .style('display','block');
+    .style('display','block')
+    .attr('width', W)
+    .attr('height', H);
   svg.append('rect').attr('width',W).attr('height',H).attr('fill','#0d3b3e');
   const proj=d3.geoMercator().center([22,0]).scale(W*0.44).translate([W/2+10,H/2+20]);
   const path=d3.geoPath(proj);
@@ -465,7 +471,9 @@ function buildSEAResultsSVG(container, W, H) {
   const svg=d3.select(container).append('svg')
     .attr('viewBox',`0 0 ${W} ${H}`)
     .attr('preserveAspectRatio','xMidYMid meet')
-    .style('display','block');
+    .style('display','block')
+    .attr('width', W)
+    .attr('height', H);
   svg.append('rect').attr('width',W).attr('height',H).attr('fill','#0d3b3e');
   const seaCountries=['Cambodia','Laos','Myanmar','Thailand','Vietnam'];
   const proj=d3.geoMercator().center([103,17]).scale(W*0.85).translate([W/2,H*0.62]);
