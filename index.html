@@ -883,10 +883,10 @@ function getCountryTip(name) {
   const d = countryEPData[name];
   if (!d) return '<span style="color:rgba(255,255,255,0.45);font-size:11px;">Data Not Yet Available</span>';
   const ablRow = d.ablatingEPs > 0
-    ? `${d.ablatingEPs} EP${d.ablatingEPs>1?'s':''} <span style="color:#E6FF3D;font-size:11px;">(${d.ablationRatio})</span>`
+    ? `${d.ablatingEPs} EP${d.ablatingEPs>1?'s':''} <span style="color:#FF4C4C;font-size:11px;">(${d.ablationRatio})</span>`
     : `<span style="color:#e67e22;">None</span>`;
   const devRow = d.deviceEPs > 0
-    ? `${d.deviceEPs} physician${d.deviceEPs>1?'s':''} <span style="color:#E6FF3D;font-size:11px;">(${d.deviceRatio})</span>`
+    ? `${d.deviceEPs} physician${d.deviceEPs>1?'s':''} <span style="color:#FF4C4C;font-size:11px;">(${d.deviceRatio})</span>`
     : `<span style="color:#e67e22;">None</span>`;
   const visitColor = d.visitingEP==='Yes' ? '#A8E04A' : d.visitingEP==='No' ? '#e67e22' : 'rgba(255,255,255,0.45)';
   return `<div style="border-top:1px solid rgba(168,224,74,0.2);margin-top:4px;padding-top:6px;display:grid;grid-template-columns:auto auto;gap:2px 12px;font-size:12px;">
