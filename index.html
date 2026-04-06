@@ -307,7 +307,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 <!-- ══ MAPS ══ -->
 <div id="sec-maps" class="page-section maps-sec">
   <div class="maps-inner">
-    <div class="sec-eyebrow" style="color:var(--lime)">Survey Coverage</div>
+    <div class="sec-eyebrow" style="color:var(--lime);margin-top:24px;">Survey Coverage</div>
     <h2 class="sec-title" style="color:var(--white)">Response Status by Region</h2>
     <p style="color:rgba(232,223,200,0.55);font-size:15px;margin-top:4px;">Click either map to enlarge and interact.</p>
     <div class="maps-grid">
@@ -346,7 +346,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
 <!-- ══ PROGRESS ══ -->
 <div id="sec-results" class="page-section maps-sec">
   <div class="maps-inner">
-    <div class="sec-eyebrow" style="color:var(--lime)">Data & Analysis</div>
+    <div class="sec-eyebrow" style="color:var(--lime);margin-top:24px;">Data & Analysis</div>
     <h2 class="sec-title" style="color:var(--white)">Survey Results</h2>
     <p style="color:rgba(232,223,200,0.55);font-size:15px;margin-top:4px;">Click either map to enlarge and interact.</p>
     <div class="maps-grid">
@@ -427,9 +427,9 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:150;background:rgba(13,59,62,
       </div>
       <div class="prog-card">
         <div class="prog-card-label">Southeast Asia</div>
-        <div class="prog-card-num">2 <span>/ 6</span></div>
+        <div class="prog-card-num">3 <span>/ 6</span></div>
         <div class="prog-bar-outer"><div class="prog-bar-fill sea" style="width:50%"></div></div>
-        <div class="prog-card-sub">50% — 3 countries still pending</div>
+        <div class="prog-card-sub">50% — 2 countries still pending</div>
       </div>
     </div>
 
@@ -1008,7 +1008,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
 
 /* ── COUNTRY LISTS ── */
 const africaAll=[['Algeria','p'],['Angola','c'],['Benin','c'],['Botswana','c'],['Burkina Faso','p'],['Burundi','c'],['Cabo Verde','p'],['Cameroon','c'],['Central African Republic','p'],['Chad','c'],['Comoros','p'],['Congo (Brazzaville)','c'],['DR Congo (Kinshasa)','p'],["Côte d'Ivoire",'p'],['Djibouti','p'],['Egypt','c'],['Equatorial Guinea','c'],['Eritrea','p'],['Eswatini','p'],['Ethiopia','c'],['Gabon','c'],['Gambia','c'],['Ghana','c'],['Guinea','p'],['Guinea-Bissau','p'],['Kenya','c'],['Lesotho','p'],['Liberia','c'],['Libya','c'],['Madagascar','p'],['Malawi','p'],['Mali','c'],['Mauritania','p'],['Mauritius','p'],['Morocco','p'],['Mozambique','c'],['Namibia','c'],['Niger','p'],['Nigeria','c'],['Rwanda','c'],["São Tomé and Príncipe",'p'],['Senegal','c'],['Seychelles','p'],['Sierra Leone','c'],['Somalia','c'],['South Africa','p'],['South Sudan','c'],['Sudan','c'],['Tanzania','c'],['Togo','c'],['Tunisia','c'],['Uganda','c'],['Zambia','c'],['Zimbabwe','p']];
-const seaAll=[['Cambodia','c'],['Mongolia','c'],['Laos','p'],['Myanmar','p'],['Thailand','p'],['Vietnam','p']];
+const seaAll=[['Cambodia','c'],['Mongolia','c'],['Laos','p'],['Myanmar','p'],['Thailand','p'],['Vietnam','c']];
 function buildList(data,id){const el=document.getElementById(id);data.forEach(([name,s])=>{const d=document.createElement('div');d.className='cpill';d.innerHTML=`<div class="sdot ${s}"></div><span>${name}</span>`;el.appendChild(d);});}
 buildList(africaAll,'al');buildList(seaAll,'sl');
 function showTab(id,btn){document.querySelectorAll('.cgrid').forEach(e=>e.classList.add('hidden'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('on'));document.getElementById(id).classList.remove('hidden');btn.classList.add('on');}
