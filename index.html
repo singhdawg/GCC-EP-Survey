@@ -840,7 +840,37 @@ const CR='#2a7a8a'; // neutral surveyed color
 
 // ── COUNTRY EP DATA FOR TOOLTIPS ──────────────────────────────────────────
 const countryEPData = {
-  'Kenya': { pop: 56.4, ablatingEPs: 1, ablationRatio: '56.4M/EP', deviceEPs: 35, deviceRatio: '1.6M/EP', deviceCenters: 16, ablationCenters: 4, visitingEP: 'Yes' },
+  'Kenya':             { pop: 56.4,  ablatingEPs: 1,   ablationRatio: '56.4M/EP',  deviceEPs: 35,  deviceRatio: '1.6M/EP',   deviceCenters: 16,   ablationCenters: 4,  visitingEP: 'Yes' },
+  'Mongolia':          { pop: 3.3,   ablatingEPs: 8,   ablationRatio: '0.4M/EP',   deviceEPs: 12,  deviceRatio: '0.3M/EP',   deviceCenters: 5,    ablationCenters: 5,  visitingEP: 'Yes' },
+  'Egypt':             { pop: 106.5, ablatingEPs: 100, ablationRatio: '1.1M/EP',   deviceEPs: 120, deviceRatio: '0.9M/EP',   deviceCenters: 3000, ablationCenters: 90, visitingEP: 'Yes' },
+  'Tunisia':           { pop: 12.1,  ablatingEPs: 18,  ablationRatio: '0.7M/EP',   deviceEPs: 28,  deviceRatio: '0.4M/EP',   deviceCenters: 30,   ablationCenters: 17, visitingEP: 'Other' },
+  'Libya':             { pop: 7.4,   ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 30,  deviceRatio: '0.2M/EP',   deviceCenters: 19,   ablationCenters: 0,  visitingEP: 'No' },
+  'Tanzania':          { pop: 67.4,  ablatingEPs: 1,   ablationRatio: '67.4M/EP',  deviceEPs: 5,   deviceRatio: '13.5M/EP',  deviceCenters: 5,    ablationCenters: 2,  visitingEP: 'Yes' },
+  'Cambodia':          { pop: 17.4,  ablatingEPs: 6,   ablationRatio: '2.9M/EP',   deviceEPs: 11,  deviceRatio: '1.6M/EP',   deviceCenters: 4,    ablationCenters: 3,  visitingEP: 'Yes' },
+  'Senegal':           { pop: 18.3,  ablatingEPs: 6,   ablationRatio: '3.1M/EP',   deviceEPs: 12,  deviceRatio: '1.5M/EP',   deviceCenters: 8,    ablationCenters: 3,  visitingEP: 'Yes' },
+  'Togo':              { pop: 9.0,   ablatingEPs: 1,   ablationRatio: '9.0M/EP',   deviceEPs: 3,   deviceRatio: '3.0M/EP',   deviceCenters: 3,    ablationCenters: 2,  visitingEP: 'Yes' },
+  'Cameroon':          { pop: 28.6,  ablatingEPs: 3,   ablationRatio: '9.5M/EP',   deviceEPs: 10,  deviceRatio: '2.9M/EP',   deviceCenters: 5,    ablationCenters: 1,  visitingEP: 'No' },
+  'Benin':             { pop: 13.7,  ablatingEPs: 1,   ablationRatio: '13.7M/EP',  deviceEPs: 2,   deviceRatio: '6.9M/EP',   deviceCenters: 1,    ablationCenters: 1,  visitingEP: 'Yes' },
+  'Ghana':             { pop: 34.1,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 8,   deviceRatio: '4.3M/EP',   deviceCenters: 3,    ablationCenters: 0,  visitingEP: 'Yes' },
+  'Nigeria':           { pop: 232.7, ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 15,  deviceRatio: '15.5M/EP',  deviceCenters: 12,   ablationCenters: 0,  visitingEP: 'Yes' },
+  'Uganda':            { pop: 50.0,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 5,   deviceRatio: '10.0M/EP',  deviceCenters: 4,    ablationCenters: 0,  visitingEP: 'Yes' },
+  'Rwanda':            { pop: 14.6,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 4,   deviceRatio: '3.7M/EP',   deviceCenters: 1,    ablationCenters: 1,  visitingEP: 'Yes' },
+  'Sudan':             { pop: 48.1,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 27,  deviceRatio: '1.8M/EP',   deviceCenters: 8,    ablationCenters: 0,  visitingEP: 'Yes' },
+  'Angola':            { pop: 37.9,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 12,  deviceRatio: '3.2M/EP',   deviceCenters: 4,    ablationCenters: 0,  visitingEP: 'No' },
+  'Gabon':             { pop: 2.5,   ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 5,   deviceRatio: '0.5M/EP',   deviceCenters: 2,    ablationCenters: 0,  visitingEP: 'Yes' },
+  'Zambia':            { pop: 20.6,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 1,   deviceRatio: '20.6M/EP',  deviceCenters: 4,    ablationCenters: 0,  visitingEP: 'Other' },
+  'Botswana':          { pop: 2.8,   ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 3,   deviceRatio: '0.9M/EP',   deviceCenters: 2,    ablationCenters: 0,  visitingEP: 'Yes' },
+  'Mozambique':        { pop: 33.9,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 3,   deviceRatio: '11.3M/EP',  deviceCenters: 2,    ablationCenters: 0,  visitingEP: 'No' },
+  'Mali':              { pop: 24.5,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 5,   deviceRatio: '4.9M/EP',   deviceCenters: 3,    ablationCenters: 0,  visitingEP: 'No' },
+  'Sierra Leone':      { pop: 8.8,   ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 2,   deviceRatio: '4.4M/EP',   deviceCenters: 1,    ablationCenters: 0,  visitingEP: 'Yes' },
+  'Somalia':           { pop: 18.1,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,         deviceCenters: 0,    ablationCenters: 0,  visitingEP: 'Other' },
+  'Equatorial Guinea': { pop: 1.8,   ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 2,   deviceRatio: '0.9M/EP',   deviceCenters: 1,    ablationCenters: 0,  visitingEP: 'Other' },
+  'Gambia':            { pop: 2.8,   ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,         deviceCenters: 0,    ablationCenters: 0,  visitingEP: 'No' },
+  'Burundi':           { pop: 13.2,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,         deviceCenters: 0,    ablationCenters: 0,  visitingEP: 'No' },
+  'Chad':              { pop: 18.5,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,         deviceCenters: 0,    ablationCenters: 0,  visitingEP: 'No' },
+  'Liberia':           { pop: 5.5,   ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,         deviceCenters: 0,    ablationCenters: 0,  visitingEP: 'No' },
+  'South Sudan':       { pop: 11.0,  ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,         deviceCenters: 0,    ablationCenters: 0,  visitingEP: 'No' },
+  'Congo-Brazzaville': { pop: 6.1,   ablatingEPs: 0,   ablationRatio: null,         deviceEPs: 2,   deviceRatio: '3.1M/EP',   deviceCenters: 2,    ablationCenters: 0,  visitingEP: 'No' },
 };
 
 function getCountryTip(name) {
@@ -854,12 +884,12 @@ function getCountryTip(name) {
     : `<span style="color:#e67e22;">None</span>`;
   const visitColor = d.visitingEP==='Yes' ? '#A8E04A' : d.visitingEP==='No' ? '#e67e22' : 'rgba(255,255,255,0.45)';
   return `<div style="border-top:1px solid rgba(168,224,74,0.2);margin-top:4px;padding-top:6px;display:grid;grid-template-columns:auto auto;gap:2px 12px;font-size:12px;">
-    <span style="color:rgba(255,255,255,0.5);">Population</span><span>${d.pop}M</span>
-    <span style="color:rgba(255,255,255,0.5);">Ablating EPs</span><span>${ablRow}</span>
-    <span style="color:rgba(255,255,255,0.5);">Device physicians</span><span>${devRow}</span>
-    <span style="color:rgba(255,255,255,0.5);">Device centers</span><span>${d.deviceCenters}</span>
-    <span style="color:rgba(255,255,255,0.5);">Ablation centers</span><span>${d.ablationCenters}</span>
-    <span style="color:rgba(255,255,255,0.5);">Visiting EP</span><span style="color:${visitColor};">${d.visitingEP}</span>
+    <span style="color:#fff;font-weight:bold;">Population</span><span>${d.pop}M</span>
+    <span style="color:#fff;font-weight:bold;">Ablating EPs</span><span>${ablRow}</span>
+    <span style="color:#fff;font-weight:bold;">Device physicians</span><span>${devRow}</span>
+    <span style="color:#fff;font-weight:bold;">Device centers</span><span>${d.deviceCenters}</span>
+    <span style="color:#fff;font-weight:bold;">Ablation centers</span><span>${d.ablationCenters}</span>
+    <span style="color:#fff;font-weight:bold;">Visiting EP</span><span style="color:${visitColor};">${d.visitingEP}</span>
   </div>`;
 }
 
@@ -872,22 +902,26 @@ function buildAfricaResultsSVG(container, W, H) {
   const proj=d3.geoMercator().center([22,0]).scale(W*0.44).translate([W/2+10,H/2+20]);
   const path=d3.geoPath(proj);
   const africa=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>!!getAN(+d.id));
-  svg.selectAll('path').data(africa).join('path').attr('d',path)
-    .attr('stroke',CS).attr('stroke-width',0.5).attr('fill',CR)
+  svg.selectAll('path').data(africa).join('path').attr('d',path).attr('stroke',CS).attr('stroke-width',0.5)
+    .attr('fill',d=>countryEPData[getAN(+d.id)]?'#2d8a4e':'#c0392b')
     .style('cursor','pointer')
     .on('mousemove',(e,d)=>{const n=getAN(+d.id);tip(e,n,getCountryTip(n));})
     .on('mouseleave',untip);
-  // Labels
-  const ll=svg.append('g');
+  const lg=svg.append('g'),ll=svg.append('g');
   africa.forEach(d=>{
     const n=getAN(+d.id);if(!n)return;
     const c=path.centroid(d);if(!c||isNaN(c[0]))return;
-    const area=path.area(d);
-    const disp=n.replace('Congo-Brazzaville','Congo-B').replace('Central African Republic','Cent. African Rep.').replace('Western Sahara','W. Sahara').replace('Equatorial Guinea','Eq. Guinea');
-    const extA_={'Gambia':[58,212],'Guinea-Bissau':[38,242],'Sierra Leone':[38,270],'Liberia':[44,292],'Togo':[472,270],'Benin':[484,254],'Rwanda':[482,304],'Burundi':[490,318],'Djibouti':[486,216],'Eritrea':[492,197],'Lesotho':[476,432],'Eswatini':[486,414],'Equatorial Guinea':[60,314]};
-    const ext=extA_[n];
-    if(ext){const[lx,ly]=ext;ll.append('line').attr('x1',c[0]).attr('y1',c[1]).attr('x2',lx<W/2?lx+5:lx-5).attr('y2',ly).attr('stroke',CL).attr('stroke-width',0.7).attr('stroke-dasharray','2,2');ll.append('text').attr('x',lx<W/2?lx-2:lx+2).attr('y',ly+3).attr('text-anchor',lx<W/2?'end':'start').attr('font-size',W>600?'8px':'6px').attr('font-family','DM Sans,sans-serif').attr('fill','#c8d8dc').attr('font-weight','500').text(disp);}
-    else{if(area<70*(W/520)**2)return;const fs=area>3000*(W/520)**2?W>600?9:7:area>800*(W/520)**2?W>600?8:6.5:W>600?7:5.5;ll.append('text').attr('x',c[0]).attr('y',c[1]+2).attr('text-anchor','middle').attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2px').text(disp);}
+    const area=path.area(d);const ext=extA[n];
+    const disp=n.replace('Congo-Brazzaville','Congo-B').replace('DR Congo','DR Congo').replace('Central African Republic','Cent. African Rep.').replace('Western Sahara','W. Sahara').replace('Equatorial Guinea','Eq. Guinea');
+    if(ext){const[lx,ly]=ext;lg.append('line').attr('x1',c[0]).attr('y1',c[1]).attr('x2',lx<W/2?lx+5:lx-5).attr('y2',ly).attr('stroke',CL).attr('stroke-width',0.7).attr('stroke-dasharray','2,2');ll.append('text').attr('x',lx<W/2?lx-2:lx+2).attr('y',ly+3).attr('text-anchor',lx<W/2?'end':'start').attr('font-size',Math.min(W*0.0077,9)+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#c8d8dc').attr('font-weight','500').text(disp);}
+    else{if(area<70*(W/520)**2)return;const fs=Math.min(area>3000*(W/520)**2?W*0.0094:area>800*(W/520)**2?W*0.0077:W*0.0068,area>3000*(W/520)**2?13:area>800*(W/520)**2?11:9);const words=disp.split(' ');if(words.length>=3&&area>1200*(W/520)**2){const mid=Math.ceil(words.length/2);[[words.slice(0,mid).join(' '),-4],[words.slice(mid).join(' '),8]].forEach(([t,dy])=>{ll.append('text').attr('x',c[0]).attr('y',c[1]+dy).attr('text-anchor','middle').attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2px').text(t);})}else{ll.append('text').attr('x',c[0]).attr('y',c[1]+2).attr('text-anchor','middle').attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2px').text(disp);}}
+  });
+  const ig=svg.append('g');
+  africaIslands.forEach(isl=>{
+    const[px,py]=proj([isl.lon,isl.lat]);const col='#c0392b';const lx=px+isl.dx*(W/520)*2,ly=py+isl.dy*(H/620)*1.4;
+    ig.append('circle').attr('cx',px).attr('cy',py).attr('r',W>600?5:3.5).attr('fill',col).attr('stroke','rgba(255,255,255,0.35)').attr('stroke-width',0.8).style('cursor','pointer').on('mousemove',e=>tip(e,isl.name,'Data Not Yet Available')).on('mouseleave',untip);
+    ig.append('line').attr('x1',px).attr('y1',py).attr('x2',lx).attr('y2',ly).attr('stroke',CL).attr('stroke-width',0.6).attr('stroke-dasharray','2,2');
+    ig.append('text').attr('x',lx+(isl.anchor==='start'?2:-2)).attr('y',ly+3).attr('text-anchor',isl.anchor).attr('font-size',Math.min(W*0.0077,9)+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#c8d8dc').attr('font-weight','500').text(isl.name);
   });
   return svg;
 }
@@ -903,12 +937,13 @@ function buildSEAResultsSVG(container, W, H) {
   const path=d3.geoPath(proj);
   const sea=topojson.feature(worldData,worldData.objects.countries).features.filter(d=>{const n=getSN(+d.id);return n&&seaCountries.includes(n);});
   svg.selectAll('path.sea').data(sea).join('path').attr('class','sea').attr('d',path)
-    .attr('stroke',CS).attr('stroke-width',0.5).attr('fill',CR)
+    .attr('stroke',CS).attr('stroke-width',0.5)
+    .attr('fill', d => countryEPData[getSN(+d.id)] ? '#2d8a4e' : '#c0392b')
     .style('cursor','pointer')
     .on('mousemove',(e,d)=>{const n=getSN(+d.id);tip(e,n,getCountryTip(n));})
     .on('mouseleave',untip);
   const ll=svg.append('g');
-  sea.forEach(d=>{const n=getSN(+d.id);if(!n)return;const c=path.centroid(d);if(!c||isNaN(c[0]))return;const area=path.area(d);if(area<80)return;const fs=area>8000?W>600?12:9:area>2000?W>600?11:8:W>600?9:7;ll.append('text').attr('x',c[0]).attr('y',c[1]+2).attr('text-anchor','middle').attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2.5px').text(n);});
+  sea.forEach(d=>{const n=getSN(+d.id);if(!n)return;const c=path.centroid(d);if(!c||isNaN(c[0]))return;const area=path.area(d);if(area<80)return;const fs=Math.min(area>8000?W*0.024:area>2000?W*0.021:W*0.018, area>8000?14:area>2000?12:10);ll.append('text').attr('x',c[0]).attr('y',c[1]+2).attr('text-anchor','middle').attr('font-size',fs+'px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2.5px').text(n);});
   // Mongolia inset
   const mW=W*0.38,mH=H*0.18,mX=W*0.58,mY=H*0.04;
   svg.append('rect').attr('x',mX-8).attr('y',mY-8).attr('width',mW+16).attr('height',mH+16).attr('rx',8).attr('fill','rgba(13,59,62,0.85)').attr('stroke','rgba(168,224,74,0.2)').attr('stroke-width',1);
@@ -916,7 +951,7 @@ function buildSEAResultsSVG(container, W, H) {
   if(mongFeature){
     const mongProj=d3.geoMercator().fitExtent([[mX,mY],[mX+mW,mY+mH]],mongFeature);
     const mongPath=d3.geoPath(mongProj);
-    svg.append('path').datum(mongFeature).attr('d',mongPath).attr('fill',CR).attr('stroke',CS).attr('stroke-width',0.5).style('cursor','pointer').on('mousemove',e=>tip(e,'Mongolia',getCountryTip('Mongolia'))).on('mouseleave',untip);
+    svg.append('path').datum(mongFeature).attr('d',mongPath).attr('fill','#2d8a4e').attr('stroke',CS).attr('stroke-width',0.5).style('cursor','pointer').on('mousemove',e=>tip(e,'Mongolia',getCountryTip('Mongolia'))).on('mouseleave',untip);
     const mc=mongPath.centroid(mongFeature);
     svg.append('text').attr('x',mc[0]).attr('y',mc[1]+2).attr('text-anchor','middle').attr('font-size',W>600?'11px':'8px').attr('font-family','DM Sans,sans-serif').attr('fill','#fff').attr('font-weight','500').attr('paint-order','stroke').attr('stroke','rgba(0,0,0,0.65)').attr('stroke-width','2px').text('Mongolia');
   }
