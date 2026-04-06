@@ -862,7 +862,7 @@ const countryEPData = {
   'Senegal':           { pop: 18.3,  ablatingEPs: 6, ablationRatio: '3.1M/EP',    deviceEPs: 12,  deviceRatio: '1.5M/EP',   deviceCenters: 12,  ablationCenters: 3,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
   'Zambia':            { pop: 20.6,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '20.6M/EP',  deviceCenters: 6,   ablationCenters: 0,  visitingEP: 'Other', lastUpdated: 'Apr 5, 2026' },
   'Botswana':          { pop: 2.8,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 3,   deviceRatio: '0.9M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Tanzania':          { pop: 67.4,  ablatingEPs: 1, ablationRatio: '67.4M/EP',   deviceEPs: 5,   deviceRatio: '13.5M/EP',  deviceCenters: 5,   ablationCenters: 2,  visitingEP: 'Other', lastUpdated: 'Apr 5, 2026' },
+  'Tanzania':          { pop: 67.4,  ablatingEPs: 1, ablationRatio: '67.4M/EP',   deviceEPs: 5,   deviceRatio: '13.5M/EP',  deviceCenters: 5,   ablationCenters: 1,  visitingEP: 'Other', lastUpdated: 'Apr 5, 2026' },
   'Equatorial Guinea': { pop: 1.8,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '0.9M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'Other', lastUpdated: 'Apr 5, 2026' },
   'Gambia':            { pop: 2.8,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'Other', lastUpdated: 'Apr 5, 2026' },
   'Sudan':             { pop: 48.1,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 27,  deviceRatio: '1.8M/EP',   deviceCenters: 8,   ablationCenters: 0,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
@@ -883,10 +883,10 @@ function getCountryTip(name) {
   const d = countryEPData[name];
   if (!d) return '<span style="color:rgba(255,255,255,0.45);font-size:11px;">Data Not Yet Available</span>';
   const ablRow = d.ablatingEPs > 0
-    ? `${d.ablatingEPs} EP${d.ablatingEPs>1?'s':''} <span style="color:rgba(255,255,255,0.45);font-size:11px;">(${d.ablationRatio})</span>`
+    ? `${d.ablatingEPs} EP${d.ablatingEPs>1?'s':''} <span style="color:#E6FF3D;font-size:11px;">(${d.ablationRatio})</span>`
     : `<span style="color:#e67e22;">None</span>`;
   const devRow = d.deviceEPs > 0
-    ? `${d.deviceEPs} physician${d.deviceEPs>1?'s':''} <span style="color:rgba(255,255,255,0.45);font-size:11px;">(${d.deviceRatio})</span>`
+    ? `${d.deviceEPs} physician${d.deviceEPs>1?'s':''} <span style="color:#E6FF3D;font-size:11px;">(${d.deviceRatio})</span>`
     : `<span style="color:#e67e22;">None</span>`;
   const visitColor = d.visitingEP==='Yes' ? '#A8E04A' : d.visitingEP==='No' ? '#e67e22' : 'rgba(255,255,255,0.45)';
   return `<div style="border-top:1px solid rgba(168,224,74,0.2);margin-top:4px;padding-top:6px;display:grid;grid-template-columns:auto auto;gap:2px 12px;font-size:12px;">
