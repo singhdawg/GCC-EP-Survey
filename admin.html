@@ -398,6 +398,15 @@
       fields.deviceRatio.value = calculateDeviceRatio(population, deviceEPs);
     }
 
+    function getTodayFormatted() {
+      const today = new Date();
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const month = months[today.getMonth()];
+      const day = today.getDate();
+      const year = today.getFullYear();
+      return `${month} ${day}, ${year}`;
+    }
+
     function setFormForNew() {
       currentKey = null;
       fields.countryName.value = '';
@@ -409,7 +418,7 @@
       fields.deviceCenters.value = '';
       fields.ablationCenters.value = '';
       fields.visitingEP.value = 'Other';
-      fields.lastUpdated.value = '';
+      fields.lastUpdated.value = getTodayFormatted();
       setStatus('Ready to add a new country record.');
     }
 
@@ -542,9 +551,31 @@
       }
     });
 
-    fields.population.addEventListener('input', updateRatios);
-    fields.ablatingEPs.addEventListener('input', updateRatios);
-    fields.deviceEPs.addEventListener('input', updateRatios);
+    fields.population.addEventListener('input', () => {
+      updateRatios();
+      fields.lastUpdated.value = getTodayFormatted();
+    });
+    fields.ablatingEPs.addEventListener('input', () => {
+      updateRatios();
+      fields.lastUpdated.value = getTodayFormatted();
+    });
+    fields.deviceEPs.addEventListener('input', () => {
+      updateRatios();
+      fields.lastUpdated.value = getTodayFormatted();
+    });
+
+    fields.deviceCenters.addEventListener('input', () => {
+      fields.lastUpdated.value = getTodayFormatted();
+    });
+    fields.ablationCenters.addEventListener('input', () => {
+      fields.lastUpdated.value = getTodayFormatted();
+    });
+    fields.visitingEP.addEventListener('change', () => {
+      fields.lastUpdated.value = getTodayFormatted();
+    })
+    fields.countryName.addEventListener('input', () => {
+      fields.lastUpdated.value = getTodayFormatted();
+    });
 
     saveButton.addEventListener('click', saveData);
     clearButton.addEventListener('click', () => {
