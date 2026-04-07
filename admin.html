@@ -299,11 +299,13 @@
     function buildUpdatedFileText(data) {
       const objectText = buildCountryDataText(data);
       const replacement = `const countryEPData = {\n${objectText}\n};`;
-      const regex = /const\s+countryEPData\s*=\s*\{[\s\S]*?\};/m;
-      if (!regex.test(originalDataText)) {
-        throw new Error('Could not locate countryEPData definition inside data.js');
+      if (originalDataText) {
+        const regex = /const\s+countryEPData\s*=\s*\{[\s\S]*?\};/m;
+        if (regex.test(originalDataText)) {
+          return originalDataText.replace(regex, replacement);
+        }
       }
-      return originalDataText.replace(regex, replacement);
+      return replacement + '\n';
     }
 
     function parseCountryEPDataFromText(text) {
@@ -460,29 +462,11 @@
     function loadData() {
       if (typeof countryEPData === 'object' && countryEPData !== null) {
         countryData = { ...countryEPData };
+        populateCountryList();
+        setStatus('Data loaded from embedded countryEPData. Select a country to edit or add a new one.');
+      } else {
+        setStatus('Unable to load countryEPData from the embedded script. Ensure data.js is present and defines countryEPData.', true);
       }
-      fetch('data.js')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Unable to fetch data.js from the same folder.');
-          }
-          return response.text();
-        })
-        .then(text => {
-          originalDataText = text;
-          const parsed = parseCountryEPDataFromText(text);
-          countryData = { ...parsed };
-          populateCountryList();
-          setStatus('Data loaded from data.js. Select a country to edit or add a new one.');
-        })
-        .catch(error => {
-          if (Object.keys(countryData).length > 0) {
-            populateCountryList();
-            setStatus('Loaded countryEPData from script, but failed to read full data.js text for download.');
-          } else {
-            setStatus('Failed to load data.js. Ensure this file is opened from the same folder and data.js is available.', true);
-          }
-        });
     }
 
     countrySelect.addEventListener('change', () => {
