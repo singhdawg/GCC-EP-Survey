@@ -342,32 +342,266 @@
       }).join('\n');
     }
 
-    function buildUpdatedFileText(data, region) {
-      const objectText = buildCountryDataText(data);
-      
-      // Define current complete/pending sets
-      const africaComplete = new Set(['Angola','Benin','Botswana','Burundi','Cameroon','Chad','Congo-Brazzaville','Egypt','Equatorial Guinea','Ethiopia','Gabon','Gambia','Ghana','Kenya','Liberia','Libya','Mali','Mozambique','Namibia','Nigeria','Rwanda','Senegal','Sierra Leone','Somalia','South Sudan','Sudan','Tanzania','Togo','Tunisia','Uganda','Zambia']);
-      const africaPending = new Set(['Algeria','Burkina Faso','Cabo Verde','Central African Republic','Comoros',"Côte d'Ivoire",'Djibouti','Eritrea','Eswatini','Guinea','Guinea-Bissau','Lesotho','Madagascar','Malawi','Mauritania','Mauritius','Morocco','Niger',"São Tomé and Príncipe",'Seychelles','South Africa','DR Congo','Zimbabwe']);
-      const seaComplete = new Set(['Cambodia','Mongolia','Vietnam']);
-      const seaPending = new Set(['Laos','Myanmar','Thailand']);
-      
-      // Move country from pending to complete if it's a new country
-      const countryName = Object.keys(data).find(key => !countryData[key]);
-      if (countryName) {
-        if (region === 'Africa') {
-          if (africaPending.has(countryName)) {
-            africaPending.delete(countryName);
-            africaComplete.add(countryName);
-          }
-        } else {
-          if (seaPending.has(countryName)) {
-            seaPending.delete(countryName);
-            seaComplete.add(countryName);
-          }
-        }
+    let originalDataText = `/* ── RESULTS MODAL ── */
+// Neutral color for results maps — all countries same teal, no green/red yet
+const CR='#2a7a8a'; // neutral surveyed color
+
+// ── COUNTRY EP DATA FOR TOOLTIPS ──────────────────────────────────────────
+const countryEPData = {
+  'Ethiopia':          { pop: 128.7, ablatingEPs: 0, ablationRatio: null,         deviceEPs: 8,   deviceRatio: '16.1M/EP',  deviceCenters: 4,   ablationCenters: 0,  visitingEP: 'Other', lastUpdated: 'Apr 5, 2026' },
+  'Mongolia':          { pop: 3.3,   ablatingEPs: 8, ablationRatio: '0.4M/EP',    deviceEPs: 12,  deviceRatio: '0.3M/EP',   deviceCenters: 5,   ablationCenters: 5,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
+  'Gabon':             { pop: 2.5,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Laos':              { pop: 7.6,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Myanmar':           { pop: 55.0,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Thailand':          { pop: 71.7,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Vietnam':           { pop: 98.0,  ablatingEPs: 15, ablationRatio: '6.5M/EP',   deviceEPs: 30,  deviceRatio: '3.3M/EP',   deviceCenters: 6,   ablationCenters: 11, visitingEP: 'Yes',   lastUpdated: 'Apr 2026' },
+  'Rwanda':            { pop: 14.6,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 4,   deviceRatio: '3.6M/EP',   deviceCenters: 4,   ablationCenters: 1,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
+  'Ghana':             { pop: 34.1,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 8,   deviceRatio: '4.3M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
+  'Nigeria':           { pop: 232.7, ablatingEPs: 0, ablationRatio: null,         deviceEPs: 15,  deviceRatio: '15.5M/EP',  deviceCenters: 8,   ablationCenters: 0,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
+  'Cambodia':          { pop: 17.4,  ablatingEPs: 6, ablationRatio: '2.9M/EP',    deviceEPs: 11,  deviceRatio: '1.6M/EP',   deviceCenters: 4,   ablationCenters: 3,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
+  'Angola':            { pop: 37.9,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 12,  deviceRatio: '3.2M/EP',   deviceCenters: 4,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Benin':             { pop: 13.4,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 3,   deviceRatio: '4.5M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Botswana':          { pop: 2.4,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '1.2M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Burundi':           { pop: 12.9,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '6.5M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Cameroon':          { pop: 28.6,  ablatingEPs: 3, ablationRatio: '9.5M/EP',    deviceEPs: 10,  deviceRatio: '2.9M/EP',   deviceCenters: 5,   ablationCenters: 1,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Chad':              { pop: 18.3,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '9.2M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Congo-Brazzaville': { pop: 6.1,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '3.0M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Egypt':             { pop: 106.4, ablatingEPs: 0, ablationRatio: null,         deviceEPs: 20,  deviceRatio: '5.3M/EP',   deviceCenters: 10,  ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Equatorial Guinea': { pop: 1.6,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '1.6M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Gambia':            { pop: 2.7,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '2.7M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Kenya':             { pop: 55.0,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 10,  deviceRatio: '5.5M/EP',   deviceCenters: 5,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Liberia':           { pop: 5.4,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '5.4M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Libya':             { pop: 6.9,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 3,   deviceRatio: '2.3M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Mali':              { pop: 24.5,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '4.9M/EP',   deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Mozambique':        { pop: 33.1,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '6.6M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Namibia':           { pop: 2.6,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '2.6M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Senegal':           { pop: 17.8,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 4,   deviceRatio: '4.5M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Sierra Leone':      { pop: 8.4,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '4.2M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Somalia':           { pop: 17.6,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'South Sudan':       { pop: 11.0,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Sudan':             { pop: 47.3,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '9.5M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Tanzania':          { pop: 63.6,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 10,  deviceRatio: '6.4M/EP',   deviceCenters: 5,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Togo':              { pop: 9.0,   ablatingEPs: 1, ablationRatio: '9.0M/EP',    deviceEPs: 3,   deviceRatio: '3.0M/EP',   deviceCenters: 3,   ablationCenters: 2,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
+  'Tunisia':           { pop: 12.3,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '2.5M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+  'Uganda':            { pop: 50.0,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '10.0M/EP',  deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
+  'Zambia':            { pop: 20.2,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 4,   deviceRatio: '5.1M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
+};
+
+// Progress data for index.html
+const surveyProgress = {
+  africa: { responses: 31, total: 55, percentage: 56 },
+  sea: { responses: 3, total: 6, percentage: 50 },
+  overall: { responses: 34, total: 61, percentage: 55.7 }
+};
+
+// ── PROGRESS SETS ─────────────────────────────────────────────────────────
+const africaComplete = new Set(['Angola','Benin','Botswana','Burundi','Cameroon','Chad','Congo-Brazzaville','Egypt','Equatorial Guinea','Gabon','Gambia','Ghana','Kenya','Liberia','Libya','Mali','Mozambique','Namibia','Nigeria','Rwanda','Senegal','Sierra Leone','Sudan','Tanzania','Togo','Tunisia','Uganda','Zambia']);
+const africaPending = new Set(['Algeria','Burkina Faso','Cabo Verde','Central African Republic','Comoros','Côte d'Ivoire','Djibouti','Eritrea','Eswatini','Ethiopia','Guinea','Guinea-Bissau','Lesotho','Madagascar','Malawi','Mauritania','Mauritius','Morocco','Niger','São Tomé and Príncipe','Seychelles','Somalia','South Africa','South Sudan','DR Congo','Zimbabwe']);
+const seaComplete = new Set(['Cambodia','Vietnam']);
+const seaPending = new Set(['Laos','Mongolia','Myanmar','Thailand']);
+
+// ── TICKER ITEMS ──────────────────────────────────────────────────────────
+const tickerItems = [
+  "Angola · Complete","Benin · Complete","Botswana · Complete","Burundi · Complete",
+  "Cameroon · Complete","Chad · Complete","Congo-Brazzaville · Complete","Egypt · Complete",
+  "Equatorial Guinea · Complete","Gabon · Complete","Gambia · Complete","Ghana · Complete",
+  "Kenya · Complete","Liberia · Complete","Libya · Complete","Mali · Complete",
+  "Mozambique · Complete","Namibia · Complete","Nigeria · Complete","Rwanda · Complete",
+  "Senegal · Complete","Sierra Leone · Complete","Sudan · Complete","Tanzania · Complete",
+  "Togo · Complete","Tunisia · Complete","Uganda · Complete","Zambia · Complete","Cambodia · Complete","Vietnam · Complete",
+  "56% Africa Response Rate","50% SE Asia Response Rate","61 Countries Surveyed","34 Responses Received",
+];
+
+// ── GLOBE/MAP FUNCTIONS ───────────────────────────────────────────────────
+function getCountryTip(country) {
+  const data = countryEPData[country];
+  if (!data) return '';
+  const ep = data.deviceEPs + data.ablatingEPs;
+  const centers = data.deviceCenters + data.ablationCenters;
+  const ratio = data.deviceRatio || data.ablationRatio || 'N/A';
+  const status = ep > 0 ? 'Complete' : 'Pending';
+  return \`<b>\${country}</b><br>Population: \${data.pop}M<br>EPs: \${ep}<br>Centers: \${centers}<br>Ratio: \${ratio}<br>Status: \${status}\`;
+}
+
+function buildAfricaSVG() {
+  const svg = d3.select('#africa-map').append('svg').attr('viewBox', '0 0 1000 1000');
+  const projection = d3.geoMercator().scale(400).translate([500,600]);
+  const path = d3.geoPath().projection(projection);
+  const g = svg.append('g');
+  g.selectAll('path')
+    .data(africa.features)
+    .enter().append('path')
+    .attr('d', path)
+    .attr('fill', d => africaComplete.has(d.properties.name) ? '#a8e04a' : '#2a7a8a')
+    .attr('stroke', '#ebf3e8')
+    .attr('stroke-width', 0.5)
+    .on('mouseover', function(event, d) {
+      d3.select(this).attr('fill', '#d4f78c');
+      const tip = getCountryTip(d.properties.name);
+      showTooltip(tip, event.pageX, event.pageY);
+    })
+    .on('mouseout', function(event, d) {
+      d3.select(this).attr('fill', africaComplete.has(d.properties.name) ? '#a8e04a' : '#2a7a8a');
+      hideTooltip();
+    });
+}
+
+function buildSEASVG() {
+  const svg = d3.select('#sea-map').append('svg').attr('viewBox', '0 0 1000 1000');
+  const projection = d3.geoMercator().scale(800).translate([200,400]);
+  const path = d3.geoPath().projection(projection);
+  const g = svg.append('g');
+  g.selectAll('path')
+    .data(sea.features)
+    .enter().append('path')
+    .attr('d', path)
+    .attr('fill', d => seaComplete.has(d.properties.name) ? '#a8e04a' : '#2a7a8a')
+    .attr('stroke', '#ebf3e8')
+    .attr('stroke-width', 0.5)
+    .on('mouseover', function(event, d) {
+      d3.select(this).attr('fill', '#d4f78c');
+      const tip = getCountryTip(d.properties.name);
+      showTooltip(tip, event.pageX, event.pageY);
+    })
+    .on('mouseout', function(event, d) {
+      d3.select(this).attr('fill', seaComplete.has(d.properties.name) ? '#a8e04a' : '#2a7a8a');
+      hideTooltip();
+    });
+}
+
+// ── MODAL FUNCTIONS ───────────────────────────────────────────────────────
+function openModal(type) {
+  const modal = document.getElementById('map-modal');
+  const content = document.getElementById('modal-content');
+  const meta = document.getElementById('modal-meta');
+  const resultsMeta = document.getElementById('results-modal-meta');
+  if (type === 'africa') {
+    content.innerHTML = '<div id="africa-map"></div>';
+    buildAfricaSVG();
+    meta.textContent = '31 of 55 countries responded · 56.4% response rate';
+    resultsMeta.textContent = '31 countries surveyed';
+  } else if (type === 'sea') {
+    content.innerHTML = '<div id="sea-map"></div>';
+    buildSEASVG();
+    meta.textContent = '3 of 6 countries responded · 50% response rate';
+    resultsMeta.textContent = '2 countries surveyed';
+  }
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('map-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  untip();
+}
+
+document.getElementById('map-modal').addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ── TOOLTIP FUNCTIONS ─────────────────────────────────────────────────────
+function showTooltip(text, x, y) {
+  const tooltip = document.getElementById('tooltip');
+  tooltip.innerHTML = text;
+  tooltip.style.left = x + 10 + 'px';
+  tooltip.style.top = y + 10 + 'px';
+  tooltip.style.display = 'block';
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip').style.display = 'none';
+}
+
+function untip() {
+  hideTooltip();
+}
+
+// ── GLOBE FUNCTIONS ───────────────────────────────────────────────────────
+function initGlobe() {
+  const canvas = document.getElementById('globe-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+  const projection = d3.geoOrthographic().scale(200).translate([width/2, height/2]);
+  const path = d3.geoPath().projection(projection).context(ctx);
+  let rotation = 0;
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = '#071f17';
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = '#2a7a8a';
+    ctx.beginPath();
+    path({type: 'Sphere'});
+    ctx.fill();
+    ctx.strokeStyle = '#ebf3e8';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fillStyle = '#a8e04a';
+    africa.features.forEach(feature => {
+      if (africaComplete.has(feature.properties.name)) {
+        ctx.beginPath();
+        path(feature);
+        ctx.fill();
       }
+    });
+    sea.features.forEach(feature => {
+      if (seaComplete.has(feature.properties.name)) {
+        ctx.beginPath();
+        path(feature);
+        ctx.fill();
+      }
+    });
+    rotation += 0.5;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── INITIALIZATION ────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initGlobe();
+  showSection('home');
+});`;
+
+    function buildUpdatedFileText(data, region, originalText) {
+      let updatedText = originalText;
       
-      // Calculate new counts
+      const africaAll = new Set([
+        'Angola','Benin','Botswana','Burundi','Cameroon','Chad','Congo-Brazzaville','Egypt','Equatorial Guinea','Ethiopia','Gabon','Gambia','Ghana','Kenya','Liberia','Libya','Mali','Mozambique','Namibia','Nigeria','Rwanda','Senegal','Sierra Leone','Somalia','South Sudan','Sudan','Tanzania','Togo','Tunisia','Uganda','Zambia',
+        'Algeria','Burkina Faso','Cabo Verde','Central African Republic','Comoros','Côte d'Ivoire','Djibouti','Eritrea','Eswatini','Guinea','Guinea-Bissau','Lesotho','Madagascar','Malawi','Mauritania','Mauritius','Morocco','Niger','São Tomé and Príncipe','Seychelles','South Africa','DR Congo','Zimbabwe'
+      ]);
+      const seaAll = new Set(['Cambodia','Laos','Myanmar','Thailand','Vietnam','Mongolia']);
+
+      const africaComplete = new Set();
+      const seaComplete = new Set();
+      const unknownComplete = [];
+
+      Object.keys(data).forEach(name => {
+        if (seaAll.has(name)) {
+          seaComplete.add(name);
+        } else if (africaAll.has(name)) {
+          africaComplete.add(name);
+        } else {
+          unknownComplete.push(name);
+        }
+      });
+
+      unknownComplete.forEach(name => {
+        if (region === 'Southeast Asia') {
+          seaComplete.add(name);
+        } else {
+          africaComplete.add(name);
+        }
+      });
+
+      const africaPending = new Set([...africaAll].filter(name => !africaComplete.has(name)));
+      const seaPending = new Set([...seaAll].filter(name => !seaComplete.has(name)));
+
       const africaResponses = africaComplete.size;
       const africaTotal = africaComplete.size + africaPending.size;
       const seaResponses = seaComplete.size;
@@ -375,17 +609,14 @@
       const totalResponses = africaResponses + seaResponses;
       const totalCountries = africaTotal + seaTotal;
       
-      // Calculate percentages
       const africaPercent = africaTotal > 0 ? Math.round((africaResponses / africaTotal) * 100) : 0;
       const seaPercent = seaTotal > 0 ? Math.round((seaResponses / seaTotal) * 100) : 0;
       
-      // Build updated sets as strings
       const africaCompleteStr = `const africaComplete=new Set([${Array.from(africaComplete).map(c => `'${c}'`).join(',')}]);`;
       const africaPendingStr = `const africaPending=new Set([${Array.from(africaPending).map(c => `'${c}'`).join(',')}]);`;
       const seaCompleteStr = `const seaComplete=new Set([${Array.from(seaComplete).map(c => `'${c}'`).join(',')}]);`;
       const seaPendingStr = `const seaPending=new Set([${Array.from(seaPending).map(c => `'${c}'`).join(',')}]);`;
       
-      // Build updated ticker items
       const tickerItems = [
         ...Array.from(africaComplete).map(c => `'${c} · Complete'`),
         ...Array.from(seaComplete).map(c => `'${c} · Complete'`),
@@ -396,37 +627,23 @@
       ];
       const tickerItemsStr = `const tickerItems = [\n  ${tickerItems.join(',\n  ')}\n];`;
       
-      // Build updated modal meta text
       const africaMeta = `'${africaResponses} of ${africaTotal} countries responded · ${africaPercent}% response rate'`;
       const seaMeta = `'${seaResponses} of ${seaTotal} countries responded · ${seaPercent}% response rate'`;
       
-      // Add progress variables for use by index.html
-      const progressVars = `
-// Progress data for index.html
-const surveyProgress = {
-  africa: { responses: ${africaResponses}, total: ${africaTotal}, percentage: ${africaPercent} },
-  sea: { responses: ${seaResponses}, total: ${seaTotal}, percentage: ${seaPercent} },
-  overall: { responses: ${totalResponses}, total: ${totalCountries}, percentage: ${((totalResponses / totalCountries) * 100).toFixed(1)} }
-};
-`;
+      const progressVars = `\n// Progress data for index.html\nconst surveyProgress = {\n  africa: { responses: ${africaResponses}, total: ${africaTotal}, percentage: ${africaPercent} },\n  sea: { responses: ${seaResponses}, total: ${seaTotal}, percentage: ${seaPercent} },\n  overall: { responses: ${totalResponses}, total: ${totalCountries}, percentage: ${((totalResponses / totalCountries) * 100).toFixed(1)} }\n};\n`;
       
-      // Insert progress variables before the countryEPData
       updatedText = updatedText.replace(/\/\* ── COUNTRY EP DATA/, `${progressVars}/* ── COUNTRY EP DATA`);
       
-      // Update countryEPData
       const countryEPDataReplacement = `const countryEPData = {\n${objectText}\n};`;
       updatedText = updatedText.replace(/const\s+countryEPData\s*=\s*\{[\s\S]*?\};/m, countryEPDataReplacement);
       
-      // Update sets
       updatedText = updatedText.replace(/const africaComplete=new Set\(\[[\s\S]*?\]\);/, africaCompleteStr);
       updatedText = updatedText.replace(/const africaPending=new Set\(\[[\s\S]*?\]\);/, africaPendingStr);
       updatedText = updatedText.replace(/const seaComplete=new Set\(\[[\s\S]*?\]\);/, seaCompleteStr);
       updatedText = updatedText.replace(/const seaPending=new Set\(\[[\s\S]*?\]\);/, seaPendingStr);
       
-      // Update ticker items
       updatedText = updatedText.replace(/const tickerItems = \[[\s\S]*?\];/m, tickerItemsStr);
       
-      // Update modal meta text
       updatedText = updatedText.replace(/document\.getElementById\('modal-meta'\)\.textContent='31 of 55 countries responded · 56\.4% response rate';/, `document.getElementById('modal-meta').textContent=${africaMeta};`);
       updatedText = updatedText.replace(/document\.getElementById\('modal-meta'\)\.textContent='3 of 6 countries responded · 50% response rate';/, `document.getElementById('modal-meta').textContent=${seaMeta};`);
       updatedText = updatedText.replace(/document\.getElementById\('results-modal-meta'\)\.textContent='31 countries surveyed';/, `document.getElementById('results-modal-meta').textContent='${africaResponses} countries surveyed';`);
@@ -434,6 +651,7 @@ const surveyProgress = {
       
       return updatedText;
     }
+
 
     function parseCountryEPDataFromText(text) {
       const match = text.match(/const\s+countryEPData\s*=\s*\{([\s\S]*?)\};/m);
@@ -620,7 +838,7 @@ const surveyProgress = {
           ablationCenters: formValues.ablationCenters
         };
 
-        const updatedText = buildUpdatedFileText(updatedData, formValues.region);
+        const updatedText = buildUpdatedFileText(updatedData, formValues.region, originalDataText);
         downloadDataJs(updatedText);
         setStatus(`Updated data.js ready for download. Country data saved for ${key}.`);
         countryData = updatedData;
