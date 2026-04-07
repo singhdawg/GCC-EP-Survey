@@ -92,6 +92,18 @@
       box-shadow: 0 0 0 4px rgba(168,224,74,0.14);
     }
 
+    input[readonly] {
+      background: rgba(255,255,255,0.02);
+      border-color: rgba(168,224,74,0.1);
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    input[readonly]:focus {
+      border-color: rgba(168,224,74,0.1);
+      box-shadow: none;
+    }
+
     .wide {
       grid-column: 1 / -1;
     }
@@ -193,23 +205,19 @@
         </div>
         <div class="field-group">
           <label for="ablationRatio">Ablation ratio</label>
-          <input id="ablationRatio" type="text" placeholder="e.g. 56.4M/EP or leave blank">
+          <input id="ablationRatio" type="text" placeholder="Auto-calculated" readonly>
         </div>
         <div class="field-group">
           <label for="deviceRatio">Device ratio</label>
-          <input id="deviceRatio" type="text" placeholder="e.g. 1.6M/EP or leave blank">
+          <input id="deviceRatio" type="text" placeholder="Auto-calculated" readonly>
         </div>
         <div class="field-group">
           <label for="deviceCenters">Device centers</label>
           <input id="deviceCenters" type="number" step="1" min="0" placeholder="e.g. 16">
         </div>
         <div class="field-group">
-          <label for="ablationCentersWithout3D">Ablation centers without 3D mapping</label>
-          <input id="ablationCentersWithout3D" type="number" step="1" min="0" placeholder="e.g. 4">
-        </div>
-        <div class="field-group">
-          <label for="ablationCentersWith3D">Ablation centers with 3D mapping</label>
-          <input id="ablationCentersWith3D" type="number" step="1" min="0" placeholder="e.g. 0">
+          <label for="ablationCenters">Ablation centers</label>
+          <input id="ablationCenters" type="number" step="1" min="0" placeholder="e.g. 4">
         </div>
         <div class="field-group">
           <label for="visitingEP">Visiting EP status</label>
@@ -248,8 +256,7 @@
       ablationRatio: document.getElementById('ablationRatio'),
       deviceRatio: document.getElementById('deviceRatio'),
       deviceCenters: document.getElementById('deviceCenters'),
-      ablationCentersWithout3D: document.getElementById('ablationCentersWithout3D'),
-      ablationCentersWith3D: document.getElementById('ablationCentersWith3D'),
+      ablationCenters: document.getElementById('ablationCenters'),
       visitingEP: document.getElementById('visitingEP'),
       lastUpdated: document.getElementById('lastUpdated')
     };
@@ -312,7 +319,6 @@
       const countryNames = Object.keys(data).sort((a, b) => a.localeCompare(b));
       return countryNames.map(name => {
         const entry = data[name] || {};
-        const totalAblation = Number(entry.ablationCentersWithout3D || entry.ablationCenters || 0) + Number(entry.ablationCentersWith3D || 0);
         const parts = [
           `pop: ${formatObjectValue(entry.pop ?? null)}`,
           `ablatingEPs: ${formatObjectValue(entry.ablatingEPs ?? null)}`,
@@ -320,9 +326,7 @@
           `deviceEPs: ${formatObjectValue(entry.deviceEPs ?? null)}`,
           `deviceRatio: ${formatObjectValue(entry.deviceRatio ?? null)}`,
           `deviceCenters: ${formatObjectValue(entry.deviceCenters ?? null)}`,
-          `ablationCenters: ${formatObjectValue(totalAblation)}`,
-          `ablationCentersWithout3D: ${formatObjectValue(entry.ablationCentersWithout3D ?? entry.ablationCenters ?? 0)}`,
-          `ablationCentersWith3D: ${formatObjectValue(entry.ablationCentersWith3D ?? 0)}`,
+          `ablationCenters: ${formatObjectValue(entry.ablationCenters ?? 0)}`,
           `visitingEP: ${formatObjectValue(entry.visitingEP ?? 'Other')}`,
           `lastUpdated: ${formatObjectValue(entry.lastUpdated ?? '')}`
         ];
@@ -369,6 +373,31 @@
       setFormForNew();
     }
 
+    function calculateAblationRatio(population, ablatingEPs) {
+      if (!population || !ablatingEPs || ablatingEPs === 0) {
+        return '';
+      }
+      const ratio = population / ablatingEPs;
+      return `${ratio.toFixed(1)}M/EP`;
+    }
+
+    function calculateDeviceRatio(population, deviceEPs) {
+      if (!population || !deviceEPs || deviceEPs === 0) {
+        return '';
+      }
+      const ratio = population / deviceEPs;
+      return `${ratio.toFixed(1)}M/EP`;
+    }
+
+    function updateRatios() {
+      const population = parseFloat(fields.population.value) || 0;
+      const ablatingEPs = parseInt(fields.ablatingEPs.value) || 0;
+      const deviceEPs = parseInt(fields.deviceEPs.value) || 0;
+
+      fields.ablationRatio.value = calculateAblationRatio(population, ablatingEPs);
+      fields.deviceRatio.value = calculateDeviceRatio(population, deviceEPs);
+    }
+
     function setFormForNew() {
       currentKey = null;
       fields.countryName.value = '';
@@ -378,8 +407,7 @@
       fields.ablationRatio.value = '';
       fields.deviceRatio.value = '';
       fields.deviceCenters.value = '';
-      fields.ablationCentersWithout3D.value = '';
-      fields.ablationCentersWith3D.value = '';
+      fields.ablationCenters.value = '';
       fields.visitingEP.value = 'Other';
       fields.lastUpdated.value = '';
       setStatus('Ready to add a new country record.');
@@ -392,28 +420,35 @@
       fields.population.value = item.pop != null ? item.pop : '';
       fields.ablatingEPs.value = item.ablatingEPs != null ? item.ablatingEPs : '';
       fields.deviceEPs.value = item.deviceEPs != null ? item.deviceEPs : '';
-      fields.ablationRatio.value = item.ablationRatio != null ? item.ablationRatio : '';
-      fields.deviceRatio.value = item.deviceRatio != null ? item.deviceRatio : '';
       fields.deviceCenters.value = item.deviceCenters != null ? item.deviceCenters : '';
-      fields.ablationCentersWithout3D.value = item.ablationCentersWithout3D != null ? item.ablationCentersWithout3D : (item.ablationCenters != null ? item.ablationCenters : '');
-      fields.ablationCentersWith3D.value = item.ablationCentersWith3D != null ? item.ablationCentersWith3D : 0;
+      fields.ablationCenters.value = item.ablationCenters != null ? item.ablationCenters : '';
       fields.visitingEP.value = item.visitingEP || 'Other';
       fields.lastUpdated.value = item.lastUpdated || '';
+      updateRatios();
       setStatus(`Loaded data for ${name}. Edit fields and click Save to update data.js.`);
     }
 
     function getFormValues() {
       const countryName = fields.countryName.value.trim();
+      const pop = fields.population.value ? Number(fields.population.value) : null;
+      const ablatingEPs = fields.ablatingEPs.value ? Number(fields.ablatingEPs.value) : null;
+      const deviceEPs = fields.deviceEPs.value ? Number(fields.deviceEPs.value) : null;
+      
+      // Calculate ratios based on population and EP numbers
+      const ablationRatio = pop && ablatingEPs && ablatingEPs > 0 ? 
+        `${(pop / ablatingEPs).toFixed(1)}M/EP` : null;
+      const deviceRatio = pop && deviceEPs && deviceEPs > 0 ? 
+        `${(pop / deviceEPs).toFixed(1)}M/EP` : null;
+      
       return {
         countryName,
-        pop: fields.population.value ? Number(fields.population.value) : null,
-        ablatingEPs: fields.ablatingEPs.value ? Number(fields.ablatingEPs.value) : null,
-        ablationRatio: fields.ablationRatio.value.trim() || null,
-        deviceEPs: fields.deviceEPs.value ? Number(fields.deviceEPs.value) : null,
-        deviceRatio: fields.deviceRatio.value.trim() || null,
+        pop,
+        ablatingEPs,
+        ablationRatio,
+        deviceEPs,
+        deviceRatio,
         deviceCenters: fields.deviceCenters.value ? Number(fields.deviceCenters.value) : null,
-        ablationCentersWithout3D: fields.ablationCentersWithout3D.value ? Number(fields.ablationCentersWithout3D.value) : null,
-        ablationCentersWith3D: fields.ablationCentersWith3D.value ? Number(fields.ablationCentersWith3D.value) : null,
+        ablationCenters: fields.ablationCenters.value ? Number(fields.ablationCenters.value) : null,
         visitingEP: fields.visitingEP.value,
         lastUpdated: fields.lastUpdated.value.trim() || null
       };
@@ -435,11 +470,8 @@
       if (entry.deviceCenters != null && entry.deviceCenters < 0) {
         throw new Error('Device centers must be zero or greater.');
       }
-      if (entry.ablationCentersWithout3D != null && entry.ablationCentersWithout3D < 0) {
-        throw new Error('Ablation centers without 3D mapping must be zero or greater.');
-      }
-      if (entry.ablationCentersWith3D != null && entry.ablationCentersWith3D < 0) {
-        throw new Error('Ablation centers with 3D mapping must be zero or greater.');
+      if (entry.ablationCenters != null && entry.ablationCenters < 0) {
+        throw new Error('Ablation centers must be zero or greater.');
       }
     }
 
@@ -467,8 +499,7 @@
           deviceEPs: formValues.deviceEPs,
           deviceRatio: formValues.deviceRatio,
           deviceCenters: formValues.deviceCenters,
-          ablationCentersWithout3D: formValues.ablationCentersWithout3D,
-          ablationCentersWith3D: formValues.ablationCentersWith3D,
+          ablationCenters: formValues.ablationCenters,
           visitingEP: formValues.visitingEP,
           lastUpdated: formValues.lastUpdated
         };
@@ -478,7 +509,7 @@
         }
         updatedData[key] = {
           ...updatedEntry,
-          ablationCenters: (Number(formValues.ablationCentersWithout3D || 0) + Number(formValues.ablationCentersWith3D || 0)) || null
+          ablationCenters: formValues.ablationCenters
         };
 
         const updatedText = buildUpdatedFileText(updatedData);
@@ -510,6 +541,10 @@
         setFormForCountry(countrySelect.value);
       }
     });
+
+    fields.population.addEventListener('input', updateRatios);
+    fields.ablatingEPs.addEventListener('input', updateRatios);
+    fields.deviceEPs.addEventListener('input', updateRatios);
 
     saveButton.addEventListener('click', saveData);
     clearButton.addEventListener('click', () => {
