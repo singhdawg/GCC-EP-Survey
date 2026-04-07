@@ -192,8 +192,11 @@
           <input id="countryName" type="text" placeholder="e.g. Kenya" autocomplete="off">
         </div>
         <div class="field-group">
-          <label for="population">Population (millions)</label>
-          <input id="population" type="number" step="0.1" min="0" placeholder="e.g. 56.4">
+          <label for="region">Region</label>
+          <select id="region">
+            <option value="Africa">Africa</option>
+            <option value="Southeast Asia">Southeast Asia</option>
+          </select>
         </div>
         <div class="field-group">
           <label for="ablatingEPs">Ablating EPs</label>
@@ -250,6 +253,7 @@
     const clearButton = document.getElementById('clearButton');
     const fields = {
       countryName: document.getElementById('countryName'),
+      region: document.getElementById('region'),
       population: document.getElementById('population'),
       ablatingEPs: document.getElementById('ablatingEPs'),
       deviceEPs: document.getElementById('deviceEPs'),
@@ -334,16 +338,97 @@
       }).join('\n');
     }
 
-    function buildUpdatedFileText(data) {
+    function buildUpdatedFileText(data, region) {
       const objectText = buildCountryDataText(data);
-      const replacement = `const countryEPData = {\n${objectText}\n};`;
-      if (originalDataText) {
-        const regex = /const\s+countryEPData\s*=\s*\{[\s\S]*?\};/m;
-        if (regex.test(originalDataText)) {
-          return originalDataText.replace(regex, replacement);
+      
+      // Define current complete/pending sets
+      const africaComplete = new Set(['Angola','Benin','Botswana','Burundi','Cameroon','Chad','Congo-Brazzaville','Egypt','Equatorial Guinea','Ethiopia','Gabon','Gambia','Ghana','Kenya','Liberia','Libya','Mali','Mozambique','Namibia','Nigeria','Rwanda','Senegal','Sierra Leone','Somalia','South Sudan','Sudan','Tanzania','Togo','Tunisia','Uganda','Zambia']);
+      const africaPending = new Set(['Algeria','Burkina Faso','Cabo Verde','Central African Republic','Comoros',"Côte d'Ivoire",'Djibouti','Eritrea','Eswatini','Guinea','Guinea-Bissau','Lesotho','Madagascar','Malawi','Mauritania','Mauritius','Morocco','Niger',"São Tomé and Príncipe",'Seychelles','South Africa','DR Congo','Zimbabwe']);
+      const seaComplete = new Set(['Cambodia','Mongolia','Vietnam']);
+      const seaPending = new Set(['Laos','Myanmar','Thailand']);
+      
+      // Move country from pending to complete if it's a new country
+      const countryName = Object.keys(data).find(key => !countryData[key]);
+      if (countryName) {
+        if (region === 'Africa') {
+          if (africaPending.has(countryName)) {
+            africaPending.delete(countryName);
+            africaComplete.add(countryName);
+          }
+        } else {
+          if (seaPending.has(countryName)) {
+            seaPending.delete(countryName);
+            seaComplete.add(countryName);
+          }
         }
       }
-      return replacement + '\n';
+      
+      // Calculate new counts
+      const africaResponses = africaComplete.size;
+      const africaTotal = africaComplete.size + africaPending.size;
+      const seaResponses = seaComplete.size;
+      const seaTotal = seaComplete.size + seaPending.size;
+      const totalResponses = africaResponses + seaResponses;
+      const totalCountries = africaTotal + seaTotal;
+      
+      // Calculate percentages
+      const africaPercent = africaTotal > 0 ? Math.round((africaResponses / africaTotal) * 100) : 0;
+      const seaPercent = seaTotal > 0 ? Math.round((seaResponses / seaTotal) * 100) : 0;
+      
+      // Build updated sets as strings
+      const africaCompleteStr = `const africaComplete=new Set([${Array.from(africaComplete).map(c => `'${c}'`).join(',')}]);`;
+      const africaPendingStr = `const africaPending=new Set([${Array.from(africaPending).map(c => `'${c}'`).join(',')}]);`;
+      const seaCompleteStr = `const seaComplete=new Set([${Array.from(seaComplete).map(c => `'${c}'`).join(',')}]);`;
+      const seaPendingStr = `const seaPending=new Set([${Array.from(seaPending).map(c => `'${c}'`).join(',')}]);`;
+      
+      // Build updated ticker items
+      const tickerItems = [
+        ...Array.from(africaComplete).map(c => `'${c} · Complete'`),
+        ...Array.from(seaComplete).map(c => `'${c} · Complete'`),
+        `'${africaPercent}% Africa Response Rate'`,
+        `'${seaPercent}% SE Asia Response Rate'`,
+        `'${totalCountries} Countries Surveyed'`,
+        `'${totalResponses} Responses Received'`
+      ];
+      const tickerItemsStr = `const tickerItems = [\n  ${tickerItems.join(',\n  ')}\n];`;
+      
+      // Build updated modal meta text
+      const africaMeta = `'${africaResponses} of ${africaTotal} countries responded · ${africaPercent}% response rate'`;
+      const seaMeta = `'${seaResponses} of ${seaTotal} countries responded · ${seaPercent}% response rate'`;
+      
+      // Add progress variables for use by index.html
+      const progressVars = `
+// Progress data for index.html
+const surveyProgress = {
+  africa: { responses: ${africaResponses}, total: ${africaTotal}, percentage: ${africaPercent} },
+  sea: { responses: ${seaResponses}, total: ${seaTotal}, percentage: ${seaPercent} },
+  overall: { responses: ${totalResponses}, total: ${totalCountries}, percentage: ${((totalResponses / totalCountries) * 100).toFixed(1)} }
+};
+`;
+      
+      // Insert progress variables before the countryEPData
+      updatedText = updatedText.replace(/\/\* ── COUNTRY EP DATA/, `${progressVars}/* ── COUNTRY EP DATA`);
+      
+      // Update countryEPData
+      const countryEPDataReplacement = `const countryEPData = {\n${objectText}\n};`;
+      updatedText = updatedText.replace(/const\s+countryEPData\s*=\s*\{[\s\S]*?\};/m, countryEPDataReplacement);
+      
+      // Update sets
+      updatedText = updatedText.replace(/const africaComplete=new Set\(\[[\s\S]*?\]\);/, africaCompleteStr);
+      updatedText = updatedText.replace(/const africaPending=new Set\(\[[\s\S]*?\]\);/, africaPendingStr);
+      updatedText = updatedText.replace(/const seaComplete=new Set\(\[[\s\S]*?\]\);/, seaCompleteStr);
+      updatedText = updatedText.replace(/const seaPending=new Set\(\[[\s\S]*?\]\);/, seaPendingStr);
+      
+      // Update ticker items
+      updatedText = updatedText.replace(/const tickerItems = \[[\s\S]*?\];/m, tickerItemsStr);
+      
+      // Update modal meta text
+      updatedText = updatedText.replace(/document\.getElementById\('modal-meta'\)\.textContent='31 of 55 countries responded · 56\.4% response rate';/, `document.getElementById('modal-meta').textContent=${africaMeta};`);
+      updatedText = updatedText.replace(/document\.getElementById\('modal-meta'\)\.textContent='3 of 6 countries responded · 50% response rate';/, `document.getElementById('modal-meta').textContent=${seaMeta};`);
+      updatedText = updatedText.replace(/document\.getElementById\('results-modal-meta'\)\.textContent='31 countries surveyed';/, `document.getElementById('results-modal-meta').textContent='${africaResponses} countries surveyed';`);
+      updatedText = updatedText.replace(/document\.getElementById\('results-modal-meta'\)\.textContent='2 countries surveyed';/, `document.getElementById('results-modal-meta').textContent='${seaResponses} countries surveyed';`);
+      
+      return updatedText;
     }
 
     function parseCountryEPDataFromText(text) {
@@ -410,6 +495,7 @@
     function setFormForNew() {
       currentKey = null;
       fields.countryName.value = '';
+      fields.region.value = 'Africa';
       fields.population.value = '';
       fields.ablatingEPs.value = '';
       fields.deviceEPs.value = '';
@@ -422,10 +508,17 @@
       setStatus('Ready to add a new country record.');
     }
 
+    function getRegionForCountry(countryName) {
+      // Define Southeast Asian countries
+      const seaCountries = new Set(['Cambodia', 'Laos', 'Myanmar', 'Thailand', 'Vietnam', 'Mongolia']);
+      return seaCountries.has(countryName) ? 'Southeast Asia' : 'Africa';
+    }
+
     function setFormForCountry(name) {
       const item = countryData[name] || {};
       currentKey = name;
       fields.countryName.value = name;
+      fields.region.value = getRegionForCountry(name);
       fields.population.value = item.pop != null ? item.pop : '';
       fields.ablatingEPs.value = item.ablatingEPs != null ? item.ablatingEPs : '';
       fields.deviceEPs.value = item.deviceEPs != null ? item.deviceEPs : '';
@@ -439,6 +532,7 @@
 
     function getFormValues() {
       const countryName = fields.countryName.value.trim();
+      const region = fields.region.value;
       const pop = fields.population.value ? Number(fields.population.value) : null;
       const ablatingEPs = fields.ablatingEPs.value ? Number(fields.ablatingEPs.value) : null;
       const deviceEPs = fields.deviceEPs.value ? Number(fields.deviceEPs.value) : null;
@@ -451,6 +545,7 @@
       
       return {
         countryName,
+        region,
         pop,
         ablatingEPs,
         ablationRatio,
@@ -521,7 +616,7 @@
           ablationCenters: formValues.ablationCenters
         };
 
-        const updatedText = buildUpdatedFileText(updatedData);
+        const updatedText = buildUpdatedFileText(updatedData, formValues.region);
         downloadDataJs(updatedText);
         setStatus(`Updated data.js ready for download. Country data saved for ${key}.`);
         countryData = updatedData;
@@ -574,6 +669,9 @@
       fields.lastUpdated.value = getTodayFormatted();
     })
     fields.countryName.addEventListener('input', () => {
+      fields.lastUpdated.value = getTodayFormatted();
+    });
+    fields.region.addEventListener('change', () => {
       fields.lastUpdated.value = getTodayFormatted();
     });
 
