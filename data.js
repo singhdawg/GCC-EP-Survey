@@ -381,7 +381,7 @@ const countryEPData = {
   'Benin': { pop: 13.7, ablatingEPs: 1, ablationRatio: '13.7M/EP', deviceEPs: 2, deviceRatio: '6.8M/EP', deviceCenters: 1, ablationCenters: 1, visitingEP: 'Yes', lastUpdated: 'Apr 5, 2026' },
   'Botswana': { pop: 2.8, ablatingEPs: 0, ablationRatio: null, deviceEPs: 3, deviceRatio: '0.9M/EP', deviceCenters: 2, ablationCenters: 0, visitingEP: 'No', lastUpdated: 'Apr 5, 2026' },
   'Burundi': { pop: 13.2, ablatingEPs: 0, ablationRatio: null, deviceEPs: 0, deviceRatio: null, deviceCenters: 0, ablationCenters: 0, visitingEP: 'No', lastUpdated: 'Apr 5, 2026' },
-  'Cambodia': { pop: 17.4, ablatingEPs: 6, ablationRatio: '2.9M/EP', deviceEPs: 11, deviceRatio: '1.6M/EP', deviceCenters: 4, ablationCenters: 5, visitingEP: 'Yes', lastUpdated: 'Apr 7, 2026' },
+  'Cambodia': { pop: 17.4, ablatingEPs: 6, ablationRatio: '2.9M/EP', deviceEPs: 11, deviceRatio: '1.6M/EP', deviceCenters: 4, ablationCenters: 4, visitingEP: 'Yes', lastUpdated: 'Apr 7, 2026' },
   'Cameroon': { pop: 28.6, ablatingEPs: 3, ablationRatio: '9.5M/EP', deviceEPs: 10, deviceRatio: '2.9M/EP', deviceCenters: 5, ablationCenters: 1, visitingEP: 'No', lastUpdated: 'Apr 5, 2026' },
   'Chad': { pop: 18.5, ablatingEPs: 0, ablationRatio: null, deviceEPs: 0, deviceRatio: null, deviceCenters: 0, ablationCenters: 0, visitingEP: 'Other', lastUpdated: 'Apr 5, 2026' },
   'Congo-Brazzaville': { pop: 6.1, ablatingEPs: 0, ablationRatio: null, deviceEPs: 2, deviceRatio: '3.0M/EP', deviceCenters: 3, ablationCenters: 0, visitingEP: 'No', lastUpdated: 'Apr 5, 2026' },
