@@ -211,6 +211,10 @@
   // ── Populate country dropdown ──────────────────────────────────────
   function populateDropdown() {
     countrySelect.innerHTML = '<option value="">-- Select country --</option>';
+    const addOpt = document.createElement('option');
+    addOpt.value = '__new__';
+    addOpt.textContent = 'Add New Country';
+    countrySelect.appendChild(addOpt);
     const sorted = Object.keys(countryData).sort();
     sorted.forEach(name => {
       const opt = document.createElement('option');
@@ -218,10 +222,6 @@
       opt.textContent = name;
       countrySelect.appendChild(opt);
     });
-    const addOpt = document.createElement('option');
-    addOpt.value = '__new__';
-    addOpt.textContent = 'Add New Country';
-    countrySelect.appendChild(addOpt);
   }
 
   // ── Calculate ratios ───────────────────────────────────────────────
