@@ -342,57 +342,14 @@
       }).join('\n');
     }
 
-    let originalDataText = `/* ── RESULTS MODAL ── */
-// Neutral color for results maps — all countries same teal, no green/red yet
-const CR='#2a7a8a'; // neutral surveyed color
+    let originalDataText = '';
 
-// ── COUNTRY EP DATA FOR TOOLTIPS ──────────────────────────────────────────
-const countryEPData = {
-  'Ethiopia':          { pop: 128.7, ablatingEPs: 0, ablationRatio: null,         deviceEPs: 8,   deviceRatio: '16.1M/EP',  deviceCenters: 4,   ablationCenters: 0,  visitingEP: 'Other', lastUpdated: 'Apr 5, 2026' },
-  'Mongolia':          { pop: 3.3,   ablatingEPs: 8, ablationRatio: '0.4M/EP',    deviceEPs: 12,  deviceRatio: '0.3M/EP',   deviceCenters: 5,   ablationCenters: 5,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
-  'Gabon':             { pop: 2.5,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Laos':              { pop: 7.6,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Myanmar':           { pop: 55.0,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Thailand':          { pop: 71.7,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Vietnam':           { pop: 98.0,  ablatingEPs: 15, ablationRatio: '6.5M/EP',   deviceEPs: 30,  deviceRatio: '3.3M/EP',   deviceCenters: 6,   ablationCenters: 11, visitingEP: 'Yes',   lastUpdated: 'Apr 2026' },
-  'Rwanda':            { pop: 14.6,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 4,   deviceRatio: '3.6M/EP',   deviceCenters: 4,   ablationCenters: 1,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
-  'Ghana':             { pop: 34.1,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 8,   deviceRatio: '4.3M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
-  'Nigeria':           { pop: 232.7, ablatingEPs: 0, ablationRatio: null,         deviceEPs: 15,  deviceRatio: '15.5M/EP',  deviceCenters: 8,   ablationCenters: 0,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
-  'Cambodia':          { pop: 17.4,  ablatingEPs: 6, ablationRatio: '2.9M/EP',    deviceEPs: 11,  deviceRatio: '1.6M/EP',   deviceCenters: 4,   ablationCenters: 3,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
-  'Angola':            { pop: 37.9,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 12,  deviceRatio: '3.2M/EP',   deviceCenters: 4,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Benin':             { pop: 13.4,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 3,   deviceRatio: '4.5M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Botswana':          { pop: 2.4,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '1.2M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Burundi':           { pop: 12.9,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '6.5M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Cameroon':          { pop: 28.6,  ablatingEPs: 3, ablationRatio: '9.5M/EP',    deviceEPs: 10,  deviceRatio: '2.9M/EP',   deviceCenters: 5,   ablationCenters: 1,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Chad':              { pop: 18.3,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '9.2M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Congo-Brazzaville': { pop: 6.1,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '3.0M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Egypt':             { pop: 106.4, ablatingEPs: 0, ablationRatio: null,         deviceEPs: 20,  deviceRatio: '5.3M/EP',   deviceCenters: 10,  ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Equatorial Guinea': { pop: 1.6,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '1.6M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Gambia':            { pop: 2.7,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '2.7M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Kenya':             { pop: 55.0,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 10,  deviceRatio: '5.5M/EP',   deviceCenters: 5,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Liberia':           { pop: 5.4,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '5.4M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Libya':             { pop: 6.9,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 3,   deviceRatio: '2.3M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Mali':              { pop: 24.5,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '4.9M/EP',   deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Mozambique':        { pop: 33.1,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '6.6M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Namibia':           { pop: 2.6,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 1,   deviceRatio: '2.6M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Senegal':           { pop: 17.8,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 4,   deviceRatio: '4.5M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Sierra Leone':      { pop: 8.4,   ablatingEPs: 0, ablationRatio: null,         deviceEPs: 2,   deviceRatio: '4.2M/EP',   deviceCenters: 1,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Somalia':           { pop: 17.6,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'South Sudan':       { pop: 11.0,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 0,   deviceRatio: null,        deviceCenters: 0,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Sudan':             { pop: 47.3,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '9.5M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Tanzania':          { pop: 63.6,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 10,  deviceRatio: '6.4M/EP',   deviceCenters: 5,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Togo':              { pop: 9.0,   ablatingEPs: 1, ablationRatio: '9.0M/EP',    deviceEPs: 3,   deviceRatio: '3.0M/EP',   deviceCenters: 3,   ablationCenters: 2,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
-  'Tunisia':           { pop: 12.3,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '2.5M/EP',   deviceCenters: 3,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-  'Uganda':            { pop: 50.0,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 5,   deviceRatio: '10.0M/EP',  deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'Yes',   lastUpdated: 'Apr 5, 2026' },
-  'Zambia':            { pop: 20.2,  ablatingEPs: 0, ablationRatio: null,         deviceEPs: 4,   deviceRatio: '5.1M/EP',   deviceCenters: 2,   ablationCenters: 0,  visitingEP: 'No',    lastUpdated: 'Apr 5, 2026' },
-};
-
-// Progress data for index.html
-const surveyProgress = {
-  africa: { responses: 31, total: 55, percentage: 56 },
-  sea: { responses: 3, total: 6, percentage: 50 },
-  overall: { responses: 34, total: 61, percentage: 55.7 }
-};
+    // Progress data for index.html
+    const surveyProgress = {
+      africa: { responses: 31, total: 55, percentage: 56 },
+      sea: { responses: 3, total: 6, percentage: 50 },
+      overall: { responses: 34, total: 61, percentage: 55.7 }
+    };
 
 // ── PROGRESS SETS ─────────────────────────────────────────────────────────
 const africaComplete = new Set(['Angola','Benin','Botswana','Burundi','Cameroon','Chad','Congo-Brazzaville','Egypt','Equatorial Guinea','Gabon','Gambia','Ghana','Kenya','Liberia','Libya','Mali','Mozambique','Namibia','Nigeria','Rwanda','Senegal','Sierra Leone','Sudan','Tanzania','Togo','Tunisia','Uganda','Zambia']);
@@ -850,13 +807,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    function loadData() {
-      if (typeof countryEPData === 'object' && countryEPData !== null) {
-        countryData = { ...countryEPData };
+    async function loadData() {
+      try {
+        const response = await fetch('./data.js');
+        if (!response.ok) {
+          throw new Error(`Unable to fetch data.js: ${response.status} ${response.statusText}`);
+        }
+        originalDataText = await response.text();
+        countryData = parseCountryEPDataFromText(originalDataText);
         populateCountryList();
-        setStatus('Data loaded from embedded countryEPData. Select a country to edit or add a new one.');
-      } else {
-        setStatus('Unable to load countryEPData from the embedded script. Ensure data.js is present and defines countryEPData.', true);
+        setStatus('Data loaded from data.js. Select a country to edit or add a new one.');
+      } catch (error) {
+        setStatus(error.message, true);
       }
     }
 
