@@ -402,15 +402,16 @@ const countryEPData = {
   "Senegal": { pop: 18.3, ablatingEPs: 6, deviceEPs: 12, ablationRatio: "3.1M/EP", deviceRatio: "1.5M/EP", ablationCenters: 3, deviceCenters: 12, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
   "Sierra Leone": { pop: 8.8, ablatingEPs: 0, deviceEPs: 2, ablationRatio: "N/A", deviceRatio: "4.4M/EP", ablationCenters: 0, deviceCenters: 1, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
   "Somalia": { pop: 18.1, ablatingEPs: 0, deviceEPs: 0, ablationRatio: "N/A", deviceRatio: "N/A", ablationCenters: 0, deviceCenters: 0, visitingEP: "No", lastUpdated: "Apr 7, 2026" },
-  "South Sudan": { pop: 11.0, ablatingEPs: 0, deviceEPs: 0, ablationRatio: "N/A", deviceRatio: "N/A", ablationCenters: 0, deviceCenters: 0, visitingEP: "No", lastUpdated: "Apr 7, 2026" },
+  "South Sudan": { pop: 11, ablatingEPs: 0, deviceEPs: 0, ablationRatio: "N/A", deviceRatio: "N/A", ablationCenters: 0, deviceCenters: 0, visitingEP: "No", lastUpdated: "Apr 7, 2026" },
   "Sudan": { pop: 48.1, ablatingEPs: 0, deviceEPs: 27, ablationRatio: "N/A", deviceRatio: "1.8M/EP", ablationCenters: 0, deviceCenters: 8, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
   "Tanzania": { pop: 67.4, ablatingEPs: 1, deviceEPs: 5, ablationRatio: "67.4M/EP", deviceRatio: "13.5M/EP", ablationCenters: 1, deviceCenters: 5, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
-  "Togo": { pop: 9.0, ablatingEPs: 1, deviceEPs: 3, ablationRatio: "9.0M/EP", deviceRatio: "3.0M/EP", ablationCenters: 2, deviceCenters: 3, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
+  "Togo": { pop: 9, ablatingEPs: 1, deviceEPs: 3, ablationRatio: "9.0M/EP", deviceRatio: "3.0M/EP", ablationCenters: 2, deviceCenters: 3, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
   "Tunisia": { pop: 12.1, ablatingEPs: 18, deviceEPs: 28, ablationRatio: "0.7M/EP", deviceRatio: "0.4M/EP", ablationCenters: 17, deviceCenters: 25, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
-  "Uganda": { pop: 50.0, ablatingEPs: 0, deviceEPs: 5, ablationRatio: "N/A", deviceRatio: "10.0M/EP", ablationCenters: 0, deviceCenters: 2, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
-  "Vietnam": { pop: 98.0, ablatingEPs: 15, deviceEPs: 30, ablationRatio: "6.5M/EP", deviceRatio: "3.3M/EP", ablationCenters: 11, deviceCenters: 6, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
+  "Uganda": { pop: 50, ablatingEPs: 0, deviceEPs: 5, ablationRatio: "N/A", deviceRatio: "10.0M/EP", ablationCenters: 0, deviceCenters: 2, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
+  "Vietnam": { pop: 98, ablatingEPs: 15, deviceEPs: 30, ablationRatio: "6.5M/EP", deviceRatio: "3.3M/EP", ablationCenters: 11, deviceCenters: 6, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
   "Zambia": { pop: 20.6, ablatingEPs: 0, deviceEPs: 1, ablationRatio: "N/A", deviceRatio: "20.6M/EP", ablationCenters: 0, deviceCenters: 6, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
   "Zimbabwe": { pop: 16.7, ablatingEPs: 0, deviceEPs: 4, ablationRatio: "N/A", deviceRatio: "4.2M/EP", ablationCenters: 0, deviceCenters: 5, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
+  "South Africa": { pop: 65.5, ablatingEPs: 15, deviceEPs: 19, ablationRatio: "4.4M/EP", deviceRatio: "3.4M/EP", ablationCenters: 7, deviceCenters: 24, visitingEP: "Yes", lastUpdated: "april 8, 2026" }
 };
 
 function getCountryTip(name) {
