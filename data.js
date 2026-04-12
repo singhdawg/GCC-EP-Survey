@@ -411,7 +411,8 @@ const countryEPData = {
   "Vietnam": { pop: 98, ablatingEPs: 15, deviceEPs: 30, ablationRatio: "6.5M/EP", deviceRatio: "3.3M/EP", ablationCenters: 11, deviceCenters: 6, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
   "Zambia": { pop: 20.6, ablatingEPs: 0, deviceEPs: 1, ablationRatio: "N/A", deviceRatio: "20.6M/EP", ablationCenters: 0, deviceCenters: 6, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
   "Zimbabwe": { pop: 16.7, ablatingEPs: 0, deviceEPs: 4, ablationRatio: "N/A", deviceRatio: "4.2M/EP", ablationCenters: 0, deviceCenters: 5, visitingEP: "Yes", lastUpdated: "Apr 7, 2026" },
-  "South Africa": { pop: 65.5, ablatingEPs: 15, deviceEPs: 19, ablationRatio: "4.4M/EP", deviceRatio: "3.4M/EP", ablationCenters: 7, deviceCenters: 24, visitingEP: "Yes", lastUpdated: "april 8, 2026" }
+  "South Africa": { pop: 65.5, ablatingEPs: 15, deviceEPs: 19, ablationRatio: "4.4M/EP", deviceRatio: "3.4M/EP", ablationCenters: 7, deviceCenters: 24, visitingEP: "Yes", lastUpdated: "april 8, 2026" },
+  "Myanmar": { pop: 51.1, ablatingEPs: 14, deviceEPs: 23, ablationRatio: "3.6M/EP", deviceRatio: "2.2M/EP", ablationCenters: 7, deviceCenters: 7, visitingEP: "Yes", lastUpdated: "april 12,2026" }
 };
 
 function getCountryTip(name) {
